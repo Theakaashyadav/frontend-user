@@ -1,0 +1,200 @@
+/* ===================== ContactPage Styles (Scoped Locally) ===================== */
+
+.contact-page {
+  font-family: "Poppins", sans-serif;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Container */
+.contact-page .contact-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Steps Wrapper */
+.contact-page .steps-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(30px, 5vw, 50px);
+  width: 100%;
+  min-height: 100dvh;
+  margin: 0;
+  padding: clamp(10px, 2vw, 20px);
+  box-sizing: border-box;
+}
+
+/* Page Title */
+.contact-page .page-title {
+  text-align: center;
+  margin-bottom: clamp(20px, 4vw, 40px);
+  font-size: clamp(1.8rem, 2.4vw, 2.4rem);
+  font-weight: 700;
+  color: #1b1d3a;
+  line-height: 1.3;
+  word-break: break-word;
+}
+
+/* Step Card */
+.contact-page .step-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: min(90dvw, 1000px);
+  /* ✅ fits nicely within screen */
+  height: 85dvh;
+  /* ✅ balanced height */
+  margin: auto;
+  padding: clamp(10px, 3vw, 20px);
+  border-radius: 22px;
+  /* ✅ rounded corners restored */
+  background: #a9a9a9;
+  color: #000;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transition: all 0.4s ease;
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+
+.contact-page .step-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Buttons */
+.contact-page .btn {
+  margin-top: 20px;
+  padding: clamp(12px, 2vw, 16px) clamp(24px, 4vw, 32px);
+  border-radius: 12px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.contact-page .btn:hover {
+  transform: translateY(-2px);
+}
+
+.contact-page .btn-dark {
+  background: linear-gradient(135deg, #1b1d3a, #2d2f57);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(27, 29, 58, 0.3);
+}
+
+.contact-page .btn-dark:hover {
+  background: linear-gradient(135deg, #2d2f57, #1b1d3a);
+}
+
+/* ================== Listing Card (Product Card) ================== */
+.contact-page .listing {
+  background: #84939c;
+  border-radius: 22px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  width: min(100%, 880px);
+  min-height: 72vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.contact-page .listing:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.15);
+}
+
+/* Image */
+.contact-page .listing img {
+  width: 100%;
+  height: auto;
+  min-height: clamp(240px, 50vh, 360px);
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.contact-page .listing img:hover {
+  transform: scale(1.03);
+}
+
+/* Listing Details */
+.contact-page .listing-details {
+  padding: clamp(20px, 3vw, 32px);
+  font-size: clamp(14px, 1.5vw, 15.5px);
+  color: #222;
+  flex: 1;
+}
+
+/* Badge */
+.contact-page .listing-id-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: #1b1d3a;
+  color: #fff;
+  padding: 7px 13px;
+  border-radius: 10px;
+  font-size: clamp(12px, 1.3vw, 14px);
+  font-weight: 600;
+}
+
+/* Features */
+.contact-page .features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(8px, 2vw, 12px);
+  margin-top: 14px;
+}
+
+.contact-page .feature-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: clamp(13px, 1.4vw, 15px);
+  color: #333;
+}
+
+/* Payment Logos */
+.contact-page .payment-logos {
+  display: flex;
+  justify-content: center;
+  gap: clamp(12px, 3vw, 24px);
+  margin-top: 1rem;
+}
+
+.contact-page .pay-logo {
+  width: clamp(40px, 6vw, 55px);
+  height: clamp(40px, 6vw, 55px);
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.contact-page .pay-logo:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}

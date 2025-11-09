@@ -1,0 +1,405 @@
+:root {
+  --primary: #1B1D3A;
+  --accent: #F2C94C;
+  --background: #F4F6F8;
+  --card-bg: #5e6d7bbf;
+  --text: #1C1F33;
+  --subtext: #555;
+  --border: #E0E0E0;
+  --button-bg: #1B1D3A;
+  --button-hover: #F2C94C;
+  --danger: #E74C3C;
+}
+
+
+/* Base */
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: var(--background);
+  color: var(--text);
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Headings */
+h1,
+h2 {
+  color: var(--primary);
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 28px;
+}
+
+h2 {
+  font-size: 22px;
+  margin-top: 24px;
+}
+
+/* =====================
+   FORM STYLING
+===================== */
+form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+form input,
+form select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+form input:focus,
+form select:focus {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 6px rgba(242, 201, 76, 0.4);
+}
+
+/* Upload section aligned with inputs */
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  grid-column: span 1;
+}
+
+.upload-section label {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.upload-section input[type="file"] {
+  display: none;
+}
+
+.custom-upload {
+  background: #555555;
+  color: #fff;
+  padding: 12px 20px;
+  /* same as save button */
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  /* same text size */
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.3s ease;
+  width: 100%;
+  /* full width like save button */
+  box-sizing: border-box;
+  /* ensures padding is included in width */
+}
+
+.custom-upload:hover {
+  background: #333333;
+  transform: translateY(-2px);
+}
+
+
+.custom-upload:hover {
+  background: #333333;
+  transform: translateY(-2px);
+}
+
+/* Save Property Button */
+form button {
+  grid-column: 1 / -1;
+  padding: 12px 20px;
+  background: var(--button-bg);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+listing button:hover {
+  background: var(--button-hover);
+  color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgb(217, 47, 47);
+}
+
+/* =====================
+   CARD STYLING
+===================== */
+.card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+  padding-bottom: 12px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.listing-id-badge {
+  color: white;
+  /* ✅ Correct property */
+}
+
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.card img:hover {
+  transform: scale(1.05);
+}
+
+/* Card content */
+.card h3 {
+  margin: 12px 0 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.card p {
+  font-size: 14px;
+  color: var(--subtext);
+  margin: 6px 0;
+  line-height: 1.5;
+}
+
+.card span {
+  display: inline-block;
+  font-weight: 600;
+  margin: 4px 8px;
+}
+
+.card small {
+  display: block;
+  color: var(--subtext);
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+/* Delete button */
+.card button {
+  background: #555555;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-top: 8px;
+}
+
+.card button:hover {
+  background: #3a9147;
+}
+
+/* =====================
+   GRID LAYOUT
+===================== */
+.props {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Listing details block centered */
+.listing-details {
+
+  margin: 20px 0;
+}
+
+
+.delete-btn {
+  background: #555555;
+  /* default gray */
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 8px;
+  font-weight: 600;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+/* 🔴 Hover turns danger red */
+.delete-btn:hover {
+  background: #dc3545;
+  /* Bootstrap danger red */
+  transform: translateY(-2px);
+}
+
+
+/* =====================
+   IMAGE PREVIEW STRIP
+===================== */
+.image-preview-strip {
+  display: flex;
+  flex-wrap: nowrap;
+  /* ✅ Force all images in one row */
+  gap: 12px;
+  width: calc(100% + 390px);
+  /* 🔥 Increased width for more visible space */
+  overflow-x: auto;
+  /* ✅ Allow scroll only if needed */
+  overflow-y: hidden;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 8px 0;
+  margin-left: 0px;
+  /* 🔥 Shift slightly left to keep it centered visually */
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+
+/* Each image box */
+.image-preview-strip>div {
+  width: 160px;
+  height: 160px;
+  flex: 0 0 auto;
+  /* ✅ Keep fixed size horizontally */
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--card-bg);
+  /* ✅ subtle contrast under bg */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.image-preview-strip img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-preview-strip::-webkit-scrollbar {
+  height: 6px;
+}
+
+.image-preview-strip::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+}
+
+
+
+/* Mobile version too */
+@media (max-width: 768px) {
+  .image-preview-strip {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 10px;
+    padding: 8px 10px;
+    width: calc(100% + 20px);
+    /* ✅ extend width */
+    margin-left: -10px;
+    /* ✅ same left offset */
+    max-width: 90vw;
+    box-sizing: border-box;
+  }
+
+
+  .image-preview-strip>div {
+    flex: 0 0 auto;
+    width: 140px;
+    height: 140px;
+    scroll-snap-align: center;
+  }
+
+
+  html,
+  body {
+    overscroll-behavior-y: contain;
+  }
+}
+
+/* =====================
+   MOBILE RESPONSIVE
+===================== */
+@media (max-width: 768px) {
+
+  /* Form inputs full width */
+  form {
+    grid-template-columns: 1fr;
+  }
+
+  /* Horizontal scrollable listings */
+  .props {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    /* avoid clipping shadow */
+    scroll-snap-type: x mandatory;
+  }
+
+  .card {
+    flex: 0 0 calc(50% - 8px);
+    /* 2 cards visible */
+    scroll-snap-align: start;
+    margin-bottom: 0;
+    /* remove extra space below card */
+  }
+
+
+
+  /* Hide scrollbar for clean look */
+  .props::-webkit-scrollbar {
+    display: none;
+  }
+
+  .props {
+    -ms-overflow-style: none;
+    /* IE/Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .card {
+    flex: 0 0 calc(70% - 12px);
+    /* ~1.5 cards visible for easy swipe */
+  }
+}

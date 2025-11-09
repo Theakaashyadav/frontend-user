@@ -1,0 +1,270 @@
+/* 🌐 Scoped only to Landing Page */
+.landing-page {
+  --primary: #1b1d3a;
+  --accent: #f2c94c;
+  --background: #f4f6f8;
+  --card-bg: #5e6d7bbf;
+  --text: #1c1f33;
+  --subtext: #555;
+  --button-bg: #1b1d3a;
+  --button-hover: #f2c94c;
+  --shadow: rgba(0, 0, 0, 0.15);
+  font-family: 'Poppins', sans-serif;
+  background: var(--background);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+}
+
+/* Links */
+.landing-page a {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+}
+
+.landing-page a:hover {
+  color: var(--accent);
+}
+
+/* Header */
+.landing-page header {
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  background: var(--primary);
+  color: white;
+  z-index: 100;
+}
+
+.landing-page header nav a {
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.landing-page header nav a:hover {
+  background: var(--accent);
+  color: var(--primary);
+}
+
+/* Hero Section – Full Width */
+.landing-page section.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 6rem 2rem;
+
+  /* 👇 Make it full width */
+  width: 100%;
+  margin: 2rem 0;
+  /* remove side auto margins */
+
+  background-size: cover;
+  background-position: center;
+  color: white;
+  position: relative;
+
+  /* keep rounded corners on top & bottom only if desired */
+  border-radius: 0;
+
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Overlay */
+.landing-page section.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 0;
+}
+
+/* Ensure content above overlay */
+.landing-page section.hero h1,
+.landing-page section.hero p,
+.landing-page section.hero form {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* CTA Section */
+.landing-page section.cta {
+  background: linear-gradient(135deg, #1b1d3a, #2e2f5f);
+  color: white;
+  padding: 6rem 2rem;
+  border-radius: 20px;
+  margin: 2rem auto;
+  max-width: 800px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Footer */
+.landing-page footer {
+  background: var(--primary);
+  color: white;
+  padding: 3rem 2rem;
+}
+
+.landing-page footer a:hover {
+  color: var(--accent);
+}
+
+/* ===========================
+   💠 Property Cards – Single Row Layout
+=========================== */
+.landing-page .listings {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 16px;
+  padding: 10px 20px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.landing-page .listings::-webkit-scrollbar {
+  display: none;
+}
+
+/* Each Card */
+.landing-page .listing {
+  flex: 0 0 320px;
+  scroll-snap-align: start;
+  background: var(--card-bg);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.landing-page .listing:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Image */
+.landing-page .listing img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+  transition: transform 0.3s ease;
+}
+
+.landing-page .listing:hover img {
+  transform: scale(1.05);
+}
+
+/* Listing Details */
+.landing-page .listing-details {
+  padding: 8px 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Property title */
+.landing-page .listing-details h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--primary);
+  background: var(--feature-bg, #fff7e6);
+  padding: 6px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Price */
+.landing-page .price {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 16px;
+  margin: 6px 0;
+}
+
+/* Features */
+.landing-page .features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+  padding: 6px 10px;
+}
+
+.landing-page .feature-item {
+  background: var(--feature-bg, #fff7e6);
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.landing-page .feature-item i {
+  color: var(--primary);
+  font-size: 14px;
+}
+
+/* Button */
+.landing-page .get-contact-btn {
+  margin-top: 10px;
+  background: var(--primary);
+  color: var(--feature-bg, #fff7e6);
+  border: none;
+  padding: 12px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-align: center;
+}
+
+.landing-page .get-contact-btn:hover {
+  background: var(--button-hover);
+  color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ✅ Responsive */
+@media (max-width: 768px) {
+  .landing-page .listing {
+    flex: 0 0 260px;
+  }
+
+  .landing-page .listing img {
+    height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .landing-page .listing {
+    flex: 0 0 220px;
+  }
+
+  .landing-page .listing img {
+    height: 160px;
+  }
+
+  .landing-page .feature-item {
+    font-size: 11px;
+    padding: 5px 8px;
+  }
+}
