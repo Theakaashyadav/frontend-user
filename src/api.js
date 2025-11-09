@@ -1,14 +1,11 @@
-// src/api.js
-
 let API_BASE = "";
 
-if (window.location.hostname.includes("devtunnels.ms")) {
-  API_BASE = "https://r55nc746-5000.inc1.devtunnels.ms/api";
-} else if (window.location.hostname.includes("localhost")) {
-  API_BASE = "http://localhost:4000/api";
+if (window.location.hostname.includes("localhost")) {
+  // Local frontend talking to Render backend
+  API_BASE = "https://akash-pp66.onrender.com/api";
 } else {
-  // Production backend on Render
-  API_BASE = "https://akash-pp66.onrender.com/api";  // ✅ add /api here
+  // Production frontend on Render
+  API_BASE = "https://akash-pp66.onrender.com/api";
 }
 
 export { API_BASE };
