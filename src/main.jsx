@@ -4,7 +4,8 @@ import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { API_BASE } from "./api";
-import './styles.css';
+import "./style.css";
+
 
 // ✅ Initialize React app
 ReactDOM.createRoot(document.getElementById("root")).render(
