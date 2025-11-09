@@ -6,6 +6,7 @@ const useTunnel = false; // change to true if you want to use your devtunnel
 
 export default defineConfig({
   plugins: [react()],
+  base: '/',
   server: {
     port: 5000,
     proxy: {
