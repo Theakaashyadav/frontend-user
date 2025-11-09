@@ -8,7 +8,7 @@ if (window.location.hostname.includes("devtunnels.ms")) {
   API_BASE = "http://localhost:4000/api";
 } else {
   // Production backend on Render
-  API_BASE = "https://akash-pp66.onrender.com";
+  API_BASE = "https://akash-pp66.onrender.com/api";  // ✅ add /api here
 }
 
 export { API_BASE };
