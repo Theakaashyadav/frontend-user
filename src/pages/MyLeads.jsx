@@ -415,8 +415,7 @@ export default function MyLeads() {
           ></i>
           <h3 style={{ color: "#1b1d3a", marginBottom: "8px" }}>No Leads Found</h3>
           <p style={{ color: "#666", marginBottom: "16px", fontSize: "0.95rem" }}>
-            You don’t have access to any leads yet. Once your request is verified,
-            your leads will appear here.
+            You don’t have any leads yet. Either you haven’t requested, or no users have interacted with your properties. Leads will appear here once available.
           </p>
           <button
             className="submit-btn"
