@@ -488,11 +488,23 @@ export default function Cart() {
             your property details will appear here.
           </p>
           <button
-            className="empty submit-btn"
-            onClick={() => navigate("/")}
-          >
-            Explore Properties
-          </button>
+  onClick={() => navigate("/")}
+  style={{
+    cursor: "pointer",
+    background: "#0b132b", // replace with your accent color
+    color: "#e0e0e0",      // replace with your text color
+    fontWeight: 600,
+    border: "none",
+    padding: "12px 24px",
+    borderRadius: "10px",
+    transition: "background 0.3s ease",
+  }}
+  onMouseOver={(e) => (e.currentTarget.style.background = "#4aa3a0")}
+  onMouseOut={(e) => (e.currentTarget.style.background = "#5bc0be")}
+>
+  Explore Properties
+</button>
+
         </div>
       )}
 
