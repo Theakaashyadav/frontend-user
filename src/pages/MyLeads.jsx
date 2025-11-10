@@ -256,15 +256,17 @@ export default function MyLeads() {
       .valid-request { background: #e0f7e9; }
       .expired-request { background: #fbeaea; }
       .refresh-btn {
-        background-color: #1b1d3a;
-        color: #fff;
-        padding: 8px 20px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: all 0.2s;
-      }
+  width: auto; /* override global 100% */
+  padding: 8px 20px;
+  background-color: #1b1d3a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
       .refresh-btn:disabled { opacity: 0.6; cursor: not-allowed; }
       .refresh-btn:hover:not(:disabled) { background-color: #333659; }
       .request-card {
@@ -393,12 +395,14 @@ export default function MyLeads() {
       }}>
         <h1 style={{ marginBottom: "24px", color: "#1b1d3a" }}>All Leads</h1>
         <button
-          className="refresh-btn"
-          onClick={() => { fetchLeads(); fetchRequests(); }}
-          disabled={loading}
-        >
-          🔄 {loading ? "Refreshing..." : "Refresh"}
-        </button>
+  className="refresh-btn"
+  style={{ width: "auto" }}
+  onClick={() => { fetchLeads(); fetchRequests(); }}
+  disabled={loading}
+>
+  🔄 {loading ? "Refreshing..." : "Refresh"}
+</button>
+
       </div>
 
       {loading ? (
