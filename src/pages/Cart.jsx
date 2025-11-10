@@ -488,7 +488,7 @@ export default function Cart() {
             your property details will appear here.
           </p>
           <button
-            className="submit-btn"
+            className="empty submit-btn"
             onClick={() => navigate("/")}
           >
             Explore Properties
