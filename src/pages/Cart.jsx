@@ -484,26 +484,10 @@ export default function Cart() {
           <i className="fas fa-folder-open empty-icon"></i>
           <h3>No Properties Found</h3>
           <p>
-            You haven’t made any property requests yet. Once you submit a request,
+            You haven’t saved any property yet. Once you submit,
             your property details will appear here.
           </p>
-          <button
-  onClick={() => navigate("/")}
-  style={{
-    cursor: "pointer",
-    background: "#0b132b", // replace with your accent color
-    color: "#e0e0e0",      // replace with your text color
-    fontWeight: 600,
-    border: "none",
-    padding: "12px 24px",
-    borderRadius: "10px",
-    transition: "background 0.3s ease",
-  }}
-  onMouseOver={(e) => (e.currentTarget.style.background = "#4aa3a0")}
-  onMouseOut={(e) => (e.currentTarget.style.background = "#5bc0be")}
->
-  Explore Properties
-</button>
+          <button className=" submit-btn" onClick={() => navigate("/")} > Explore Properties </button>)
 
         </div>
       )}
