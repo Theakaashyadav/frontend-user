@@ -487,7 +487,7 @@ export default function Cart() {
             You haven’t saved any property yet. Once you submit,
             your property details will appear here.
           </p>
-          <button className=" submit-btn" onClick={() => navigate("/")} > Explore Properties </button>)
+          <button className=" submit-btn" onClick={() => navigate("/")} > Explore Properties </button>
 
         </div>
       )}
