@@ -70,8 +70,8 @@ label {
 
 button {
     cursor: pointer;
-    background: var(--text);
-    color: var(--accent);
+    background: var(--bg);
+    color: var(--text);
     font-weight: 600
 }
 
