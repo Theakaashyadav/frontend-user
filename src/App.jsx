@@ -20,7 +20,7 @@ import { GlobalToaster } from "./utils/toaster";
 import BottomNav from "./components/BottomNav";
 import SupportContactPage from "./pages/ContactUs";
 import DownloadAppButton from "./components/DownloadApp";
-import TermsAndConditions from "./components/t&c";
+import TermsAndConditions from "./components/terms";
 
 export default function App() {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -108,7 +108,7 @@ export default function App() {
               <Route path="/home1" element={<Home1 />} />
               <Route path="/ContactUs" element={<SupportContactPage />} />
               <Route path="/DownloadApp" element={<DownloadAppButton />} />
-              <Route path="/t&c" element={<TermsAndConditions />} />
+              <Route path="/terms" element={<TermsAndConditions />} />
 
 
 
