@@ -615,6 +615,43 @@ export default function AuthPage() {
               </div>
             </div>
 
+            {/* ✅ Terms Checkbox Section (Fixed Alignment) */}
+<div
+  style={styles.termsContainer}
+  onMouseEnter={(e) =>
+    Object.assign(e.currentTarget.style, styles.termsContainerHover)
+  }
+  onMouseLeave={(e) =>
+    Object.assign(e.currentTarget.style, styles.termsContainer)
+  }
+>
+  <input
+    type="checkbox"
+    required
+    id="terms"
+    style={styles.termsCheckbox}
+  />
+
+  <label htmlFor="terms" style={styles.termsLabel}>
+    I agree to the{" "}
+    <Link
+      to="/t&c"
+      style={styles.termsLink}
+      onMouseEnter={(e) =>
+        Object.assign(e.currentTarget.style, styles.termsLinkHover)
+      }
+      onMouseLeave={(e) =>
+        Object.assign(e.currentTarget.style, styles.termsLink)
+      }
+    >
+      Terms & Conditions
+    </Link>
+    {" "}
+  </label>
+
+  <div style={styles.termsGlow}></div>
+</div>
+
           </>
         )}
 
@@ -800,5 +837,70 @@ const styles = {
     padding: "10px",
     gap: "10px",
   },
+
+  /* ===== Terms Checkbox Section ===== */
+  termsContainer: {
+  position: "relative",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-start",
+  
+  background: "#fff",
+  borderRadius: "10px",
+  border: "1px solid #ddd",
+  boxShadow: "0 3px 8px rgba(0,0,0,0.05)",
+  padding: "10px 14px",
+  gap: "12px",
+  transition: "all 0.3s ease",
+},
+termsContainerHover: {
+  boxShadow: "0 5px 12px rgba(0,0,0,0.1)",
+  borderColor: "#93c5fd",
+},
+
+  termsCheckbox: {
+    width: "2rem",
+    height: "2rem",
+    cursor: "pointer",
+    border: "2px solid #60a5fa",
+    borderRadius: "0.375rem",
+    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+    accentColor: "#2563eb",
+    transition: "transform 0.2s ease",
+  },
+  termsCheckboxHover: {
+    transform: "scale(1.1)",
+  },
+  termsLabel: {
+    flex: 1,
+    color: "#374151",
+    fontSize: "0.95rem",
+    lineHeight: "1.4",
+    userSelect: "none",
+  },
+  termsLink: {
+    color: "#2563eb",
+    fontWeight: 600,
+    textDecoration: "underline",
+    textUnderlineOffset: "2px",
+    transition: "color 0.2s ease",
+  },
+  termsLinkHover: {
+    color: "#1d4ed8",
+  },
+  termsGlow: {
+    position: "absolute",
+    inset: 0,
+    borderRadius: "0.75rem",
+    pointerEvents: "none",
+    opacity: 0,
+    background:
+      "linear-gradient(to right, rgba(147, 197, 253, 0.3), transparent)",
+    transition: "opacity 0.3s ease",
+  },
+  termsGlowVisible: {
+    opacity: 1,
+  },
+  
 
 };
