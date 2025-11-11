@@ -312,107 +312,106 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
         </div>
 
         {/* 🖼 Thumbnails Strip */}
-        {cropModal.allImages?.length > 1 && (
-          <div
-            style={{
-              position: "fixed",
-              bottom: "60px", // keeps it above the button bar
-              left: 0,
-              width: "100%",
-              display: "flex",
-              overflowX: "auto",
-              gap: "8px",
-              padding: "10px 0",
-              justifyContent: "center",
-              alignItems: "flex-end",
-              background: "transparent", // ✅ fully transparent background
-              backdropFilter: "none",    // ✅ no blur or overlay
-              scrollbarWidth: "none",
-              msOverflowStyle: "none",
-              zIndex: 10001, // ✅ above the dark background, below buttons
-              // below button bar
-            }}
-          >
-            {cropModal.allImages.map((img, index) => {
-              const isActive = cropModal.index === index;
-              return (
-                <img
-                  key={index}
-                  src={img}
-                  alt={`thumb-${index}`}
-                  onClick={() =>
-                    setCropModal((prev) => ({
-                      ...prev,
-                      index,
-                      imageSrc: img,
-                    }))
-                  }
-                  style={{
-                    height: isActive ? "70px" : "55px",
-                    width: "auto",
-                    borderRadius: "6px",
-                    cursor: "pointer",
-                    border: isActive
-                      ? "2px solid #00ffb3"
-                      : "1px solid rgba(255,255,255,0.4)",
-                    transition: "all 0.2s ease",
-                    opacity: isActive ? 1 : 0.7,
-                    transform: isActive ? "translateY(-4px)" : "translateY(0)",
-                  }}
-                />
-              );
-            })}
-          </div>
-        )}
-
-        {/* 🔘 Buttons */}
-        <div
+{cropModal.allImages?.length > 1 && (
+  <div
+    style={{
+      position: "fixed",
+      bottom: "70px", // lifted a bit higher above buttons
+      left: 0,
+      width: "100%",
+      display: "flex",
+      overflowX: "auto",
+      gap: "8px",
+      padding: "10px 0",
+      justifyContent: "center",
+      alignItems: "flex-end",
+      background: "rgba(0,0,0,0.3)",
+      scrollbarWidth: "none",
+      msOverflowStyle: "none",
+      zIndex: 19, // below buttons
+    }}
+  >
+    {cropModal.allImages.map((img, index) => {
+      const isActive = cropModal.index === index;
+      return (
+        <img
+          key={index}
+          src={img}
+          alt={`thumb-${index}`}
+          onClick={() =>
+            setCropModal((prev) => ({
+              ...prev,
+              index,
+              imageSrc: img,
+            }))
+          }
           style={{
-            position: "fixed",          // ✅ stays fixed at bottom
-            bottom: 0,                  // ✅ aligns to bottom edge
-            left: 0,
-            width: "100%",              // ✅ full width on all devices
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "12px",
-            padding: "10px 0",          // ✅ spacing for touch targets
-            background: "rgba(0, 0, 0, 0.6)", // ✅ translucent overlay look
-            backdropFilter: "blur(6px)", // ✅ nice glass effect on modern browsers
-            zIndex: 20,                 // ✅ stays above other UI
-            flexWrap: "wrap",
+            height: isActive ? "65px" : "50px",
+            width: "auto",
+            borderRadius: "6px",
+            cursor: "pointer",
+            border: isActive
+              ? "2px solid #00ffb3"
+              : "1px solid rgba(255,255,255,0.4)",
+            transition: "all 0.2s ease",
+            opacity: isActive ? 1 : 0.7,
+            transform: isActive ? "translateY(-3px)" : "translateY(0)",
           }}
-        >
-          <button
-            onClick={handleCropSave}
-            style={{
-              background: "#28a745",
-              color: "#fff",
-              border: "none",
-              padding: "10px 22px",
-              borderRadius: "6px",
-              cursor: "pointer",
-              fontSize: "15px",
-            }}
-          >
-            Save Crop
-          </button>
-          <button
-            onClick={closeCropper}
-            style={{
-              background: "#dc3545",
-              color: "#fff",
-              border: "none",
-              padding: "10px 22px",
-              borderRadius: "6px",
-              cursor: "pointer",
-              fontSize: "15px",
-            }}
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
+        />
+      );
+    })}
+  </div>
+)}
+
+{/* 🔘 Buttons */}
+<div
+  style={{
+    position: "fixed",
+    bottom: 0,
+    left: 0,
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "12px",
+    padding: "12px 0",
+    background: "rgba(0, 0, 0, 0.7)",
+    backdropFilter: "blur(8px)",
+    zIndex: 20,
+    flexWrap: "nowrap", // prevent full width stretching
+  }}
+>
+  <button
+    onClick={handleCropSave}
+    style={{
+      background: "#28a745",
+      color: "#fff",
+      border: "none",
+      padding: "10px 22px",
+      borderRadius: "6px",
+      cursor: "pointer",
+      fontSize: "15px",
+      flex: "0 0 auto", // no flex expansion
+    }}
+  >
+    Save Crop
+  </button>
+  <button
+    onClick={closeCropper}
+    style={{
+      background: "#dc3545",
+      color: "#fff",
+      border: "none",
+      padding: "10px 22px",
+      borderRadius: "6px",
+      cursor: "pointer",
+      fontSize: "15px",
+      flex: "0 0 auto",
+    }}
+  >
+    Cancel
+  </button>
+</div>
 
       {/* ✨ Styling overrides */}
       <style>
