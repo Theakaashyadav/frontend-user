@@ -45,16 +45,16 @@ function ProductCard({ property, onDelete, onImageClick, navigate, phoneButtonPr
         type="checkbox"
         checked={isChecked}
         onChange={() => toggleSelect(property.listingId)}
-
+required
         style={{
-          position: "absolute",
-          top: "10px",
-          right: "10px",
-          width: "20px",
-          height: "20px",
-          cursor: "pointer",
-          zIndex: 3,
-        }}
+    position: "absolute",
+    top: "10px",
+    right: "10px",
+    width: "30px",   // increased size
+    height: "30px",  // increased size
+    cursor: "pointer",
+    zIndex: 3,
+  }}
       />
 
       {property.listingId && (
