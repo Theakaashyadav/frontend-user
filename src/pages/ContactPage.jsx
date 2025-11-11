@@ -383,7 +383,7 @@ export default function ContactPage() {
           {isLoading && <p>Loading property...</p>}
           {error && <p className="error">{error}</p>}
         
- {property && (
+  {property && (
             <ProductCard
               property={property}
               onImageClick={openModal}
@@ -403,8 +403,8 @@ export default function ContactPage() {
                     imageUrl,
                     startX,
                     startY,
-                    endX: cartRect.left + cartRect.width / 2 - 5, // center of cart icon
-                    endY: cartRect.top + cartRect.height / 2 - 3,
+                    endX: cartRect.left + cartRect.width / 2 - 20, // center of cart icon
+                    endY: cartRect.top + cartRect.height / 2 - 14,
                   });
                 };
 
