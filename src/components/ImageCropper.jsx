@@ -460,3 +460,4 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
     </div>
   );
 }
+
