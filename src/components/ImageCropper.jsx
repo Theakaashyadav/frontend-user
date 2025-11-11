@@ -317,7 +317,7 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
   className="thumbnail-strip"
   style={{
               position: "fixed",
-              bottom: "80px", // keeps it above the button bar
+              bottom: "90px", // keeps it above the button bar
               left: 0,
               width: "100%",
               display: "flex",
