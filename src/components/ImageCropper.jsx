@@ -10,18 +10,13 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
   const imgRef = useRef(null);
   const containerRef = useRef(null);
   const [scale, setScale] = useState(1);
-  const [pan, setPan] = useState({ x: 0, y: 0 }); // ✅ for image move independent of crop
-
-
-
+  const [pan, setPan] = useState({ x: 0, y: 0 });
   const [touchData, setTouchData] = useState(null);
 
   useEffect(() => {
     if (cropModal.open && cropModal.imageSrc) {
-      // Wait a tiny bit to ensure image/container is loaded
       setTimeout(() => {
-        const container = containerRef.current?.getBoundingClientRect() || img.parentElement.getBoundingClientRect();
-
+        const container = containerRef.current?.getBoundingClientRect();
         if (container) {
           const cropWidth = container.width * 0.5;
           const cropHeight = container.height * 0.5;
@@ -36,44 +31,34 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
             height: cropHeight,
           });
         } else {
-          setCrop({ unit: "px", x: 0, y: 0, width: 300, height: 300 }); // fallback
+          setCrop({ unit: "px", x: 0, y: 0, width: 300, height: 300 });
         }
         setDimensions(null);
         setScale(1);
       }, 50);
     }
-  }, [cropModal.imageSrc]);
+  }, [cropModal.imageSrc, cropModal.open]);
 
-
-  const closeCropper = () => setCropModal({ open: false, index: null, imageSrc: null });
+  const closeCropper = () =>
+    setCropModal({ open: false, index: null, imageSrc: null });
 
   const handleCropSave = async () => {
     try {
       if (!imgRef.current || !croppedAreaPixels) return;
-
       const croppedImage = await getCroppedImg(imgRef.current, croppedAreaPixels);
       const blob = await fetch(croppedImage).then((res) => res.blob());
       const newFile = new File([blob], files[cropModal.index].name, {
         type: "image/jpeg",
       });
 
-      // ✅ Create updated array
-      const updated = files.map((f, i) =>
-        i === cropModal.index ? newFile : f
-      );
-
-      // ✅ Trigger re-render & preview regeneration
-      setFiles([...updated]); // 💥 this is the key line
-
-      // ✅ Close modal
+      const updated = files.map((f, i) => (i === cropModal.index ? newFile : f));
+      setFiles([...updated]);
       closeCropper();
     } catch (err) {
       console.error("Crop failed", err);
     }
   };
 
-
-  // ✅ Auto-shrink image so it fits entirely inside cropper area
   const handleImageLoad = (e) => {
     const img = e.target;
     const container = img.parentElement.getBoundingClientRect();
@@ -85,7 +70,6 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
     setScale(scaleFactor);
   };
 
-  // ✅ Handle multitouch pinch-to-zoom
   const handleTouchStart = (e) => {
     if (e.touches.length === 2) {
       const dist = getDistance(e.touches[0], e.touches[1]);
@@ -98,7 +82,7 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
       const newDist = getDistance(e.touches[0], e.touches[1]);
       const scaleChange = newDist / touchData.initialDist;
       let newScale = touchData.initialScale * scaleChange;
-      newScale = Math.min(Math.max(newScale, 0.5), 3); // limit zoom range
+      newScale = Math.min(Math.max(newScale, 0.5), 3);
       setScale(newScale);
       e.preventDefault();
     }
@@ -122,17 +106,16 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
         left: 0,
         width: "100vw",
         height: "100vh",
-        background: "rgba(0, 0, 0, 0.9)", // ✅ slightly see-through black
+        background: "rgba(0, 0, 0, 0.9)",
         zIndex: 10000,
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         alignItems: "center",
         overflow: "hidden",
-        touchAction: "none", // prevent browser pinch zoom
+        touchAction: "none",
       }}
     >
-
       <div
         style={{
           position: "relative",
@@ -150,15 +133,13 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
           zIndex: 10000,
         }}
       >
-
-
         {/* 🖼 Crop Area */}
         <div
           ref={containerRef}
           style={{
             flex: "1 1 auto",
             width: "100%",
-            height: "100vh", // ✅ leaves space for thumbnails & buttons
+            height: "100vh",
             position: "relative",
             display: "flex",
             justifyContent: "center",
@@ -173,42 +154,25 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
-        ><ReactCrop
-          crop={crop}
-          onChange={(c) => {
-            setCrop(c);
-            if (c.width && c.height)
-              setDimensions({
-                width: Math.round(c.width),
-                height: Math.round(c.height),
-              });
-          }}
-          onComplete={(pixelCrop) => {
-            if (pixelCrop?.width && pixelCrop?.height)
-              setCroppedAreaPixels(pixelCrop);
-          }}
-          ruleOfThirds
-          keepSelection
-          style={{ width: "100%", height: "100%" }}
-          // ✅ only allow move when drag starts inside crop box
-          onMouseDown={(e) => {
-            const cropBox = document.querySelector(".ReactCrop__crop-selection");
-            if (!cropBox || !cropBox.contains(e.target)) {
-              e.stopPropagation();
-              e.preventDefault();
-            }
-          }}
-          onTouchStart={(e) => {
-            if (e.touches.length === 1) {
-              const cropBox = document.querySelector(".ReactCrop__crop-selection");
-              if (!cropBox || !cropBox.contains(e.target)) {
-                // ✅ prevent crop from moving on single tap outside crop area
-                e.stopPropagation();
-                e.preventDefault();
-              }
-            }
-          }}
         >
+          <ReactCrop
+            crop={crop}
+            onChange={(c) => {
+              setCrop(c);
+              if (c.width && c.height)
+                setDimensions({
+                  width: Math.round(c.width),
+                  height: Math.round(c.height),
+                });
+            }}
+            onComplete={(pixelCrop) => {
+              if (pixelCrop?.width && pixelCrop?.height)
+                setCroppedAreaPixels(pixelCrop);
+            }}
+            ruleOfThirds
+            keepSelection
+            style={{ width: "100%", height: "100%" }}
+          >
             <img
               ref={imgRef}
               src={cropModal.imageSrc}
@@ -218,7 +182,7 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
                 width: "100%",
                 height: "100%",
                 objectFit: "contain",
-                transform: `translate(${pan.x}px, ${pan.y}px) scale(${scale})`, // ✅ pan instead of crop
+                transform: `translate(${pan.x}px, ${pan.y}px) scale(${scale})`,
                 transformOrigin: "center center",
                 userSelect: "none",
                 WebkitUserDrag: "none",
@@ -245,48 +209,8 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
                 window.addEventListener("mousemove", moveHandler);
                 window.addEventListener("mouseup", upHandler);
               }}
-              onTouchStart={(e) => {
-                if (e.touches.length === 1) {
-                  const touch = e.touches[0];
-                  setTouchData({
-                    ...touchData,
-                    dragStart: { x: touch.clientX, y: touch.clientY },
-                    panStart: { ...pan },
-                  });
-                } else if (e.touches.length === 2) {
-                  // ✅ Stop ReactCrop from handling pinch zoom (fix flicker)
-                  e.stopPropagation();
-                  e.preventDefault();
-
-                  const dist = getDistance(e.touches[0], e.touches[1]);
-                  setTouchData({ initialDist: dist, initialScale: scale });
-                }
-              }}
-              onTouchMove={(e) => {
-                if (e.touches.length === 1 && touchData?.dragStart) {
-                  const touch = e.touches[0];
-                  const dx = (touch.clientX - touchData.dragStart.x) / scale;
-                  const dy = (touch.clientY - touchData.dragStart.y) / scale;
-                  setPan({
-                    x: touchData.panStart.x + dx,
-                    y: touchData.panStart.y + dy,
-                  });
-                  e.preventDefault();
-                } else if (e.touches.length === 2 && touchData?.initialDist) {
-                  e.stopPropagation();
-                  e.preventDefault();
-
-                  const newDist = getDistance(e.touches[0], e.touches[1]);
-                  const scaleChange = newDist / touchData.initialDist;
-                  let newScale = touchData.initialScale * scaleChange;
-                  newScale = Math.min(Math.max(newScale, 0.5), 3);
-                  setScale(newScale);
-                }
-              }}
-              onTouchEnd={() => setTouchData(null)}
             />
           </ReactCrop>
-
 
           {/* 📏 Live dimension label */}
           {dimensions && (
@@ -312,152 +236,144 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
         </div>
 
         {/* 🖼 Thumbnails Strip */}
-{cropModal.allImages?.length > 1 && (
-  <div
-    style={{
-      position: "fixed",
-      bottom: "70px", // lifted a bit higher above buttons
-      left: 0,
-      width: "100%",
-      display: "flex",
-      overflowX: "auto",
-      gap: "8px",
-      padding: "10px 0",
-      justifyContent: "center",
-      alignItems: "flex-end",
-      background: "rgba(0,0,0,0.3)",
-      scrollbarWidth: "none",
-      msOverflowStyle: "none",
-      zIndex: 19, // below buttons
-    }}
-  >
-    {cropModal.allImages.map((img, index) => {
-      const isActive = cropModal.index === index;
-      return (
-        <img
-          key={index}
-          src={img}
-          alt={`thumb-${index}`}
-          onClick={() =>
-            setCropModal((prev) => ({
-              ...prev,
-              index,
-              imageSrc: img,
-            }))
-          }
+        {cropModal.allImages?.length > 1 && (
+          <div
+            style={{
+              position: "fixed",
+              bottom: "70px",
+              left: 0,
+              width: "100%",
+              display: "flex",
+              overflowX: "auto",
+              gap: "8px",
+              padding: "10px 0",
+              justifyContent: "center",
+              alignItems: "flex-end",
+              background: "rgba(0,0,0,0.3)",
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+              zIndex: 19,
+            }}
+          >
+            {cropModal.allImages.map((img, index) => {
+              const isActive = cropModal.index === index;
+              return (
+                <img
+                  key={index}
+                  src={img}
+                  alt={`thumb-${index}`}
+                  onClick={() =>
+                    setCropModal((prev) => ({
+                      ...prev,
+                      index,
+                      imageSrc: img,
+                    }))
+                  }
+                  style={{
+                    height: isActive ? "65px" : "50px",
+                    width: "auto",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                    border: isActive
+                      ? "2px solid #00ffb3"
+                      : "1px solid rgba(255,255,255,0.4)",
+                    transition: "all 0.2s ease",
+                    opacity: isActive ? 1 : 0.7,
+                    transform: isActive ? "translateY(-3px)" : "translateY(0)",
+                  }}
+                />
+              );
+            })}
+          </div>
+        )}
+
+        {/* 🔘 Buttons */}
+        <div
           style={{
-            height: isActive ? "65px" : "50px",
-            width: "auto",
-            borderRadius: "6px",
-            cursor: "pointer",
-            border: isActive
-              ? "2px solid #00ffb3"
-              : "1px solid rgba(255,255,255,0.4)",
-            transition: "all 0.2s ease",
-            opacity: isActive ? 1 : 0.7,
-            transform: isActive ? "translateY(-3px)" : "translateY(0)",
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "12px",
+            padding: "12px 0",
+            background: "rgba(0, 0, 0, 0.7)",
+            backdropFilter: "blur(8px)",
+            zIndex: 20,
+            flexWrap: "nowrap",
           }}
-        />
-      );
-    })}
-  </div>
-)}
+        >
+          <button
+            onClick={handleCropSave}
+            style={{
+              background: "#28a745",
+              color: "#fff",
+              border: "none",
+              padding: "10px 22px",
+              borderRadius: "6px",
+              cursor: "pointer",
+              fontSize: "15px",
+              flex: "0 0 auto",
+            }}
+          >
+            Save Crop
+          </button>
+          <button
+            onClick={closeCropper}
+            style={{
+              background: "#dc3545",
+              color: "#fff",
+              border: "none",
+              padding: "10px 22px",
+              borderRadius: "6px",
+              cursor: "pointer",
+              fontSize: "15px",
+              flex: "0 0 auto",
+            }}
+          >
+            Cancel
+          </button>
+        </div>
 
-{/* 🔘 Buttons */}
-<div
-  style={{
-    position: "fixed",
-    bottom: 0,
-    left: 0,
-    width: "100%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: "12px",
-    padding: "12px 0",
-    background: "rgba(0, 0, 0, 0.7)",
-    backdropFilter: "blur(8px)",
-    zIndex: 20,
-    flexWrap: "nowrap", // prevent full width stretching
-  }}
->
-  <button
-    onClick={handleCropSave}
-    style={{
-      background: "#28a745",
-      color: "#fff",
-      border: "none",
-      padding: "10px 22px",
-      borderRadius: "6px",
-      cursor: "pointer",
-      fontSize: "15px",
-      flex: "0 0 auto", // no flex expansion
-    }}
-  >
-    Save Crop
-  </button>
-  <button
-    onClick={closeCropper}
-    style={{
-      background: "#dc3545",
-      color: "#fff",
-      border: "none",
-      padding: "10px 22px",
-      borderRadius: "6px",
-      cursor: "pointer",
-      fontSize: "15px",
-      flex: "0 0 auto",
-    }}
-  >
-    Cancel
-  </button>
-</div>
-
-      {/* ✨ Styling overrides */}
-      <style>
-        {`
-    /* ✅ Make crop handles bigger and easier to grab */
-    .ReactCrop__drag-handle {
-      width: 22px !important;
-      height: 22px !important;
-      border: 3px solid #00ffb3 !important; /* bold neon green border */
-      background: rgba(0, 0, 0, 0.4) !important;
-      border-radius: 50% !important; /* make them circular */
-      box-shadow: 0 0 6px rgba(0, 255, 179, 0.8) !important;
-      cursor: grab !important;
-    }
-
-    /* When dragging */
-    .ReactCrop__drag-handle:active {
-      background: rgba(0, 255, 179, 0.8) !important;
-      box-shadow: 0 0 10px rgba(0, 255, 179, 1) !important;
-    }
-
-    /* ✅ Make crop box border thicker and more visible */
-    .ReactCrop__crop-selection {
-      border: 3px solid rgba(0, 255, 179, 0.8) !important;
-      box-shadow: 0 0 10px rgba(0, 255, 179, 0.4) inset !important;
-    }
-
-    @media (max-width: 480px) {
-      div[style*="maxWidth: 600px"] {
-        width: 100% !important;
-        height: 75vh !important;
-      }
-      div[style*="overflow-x: auto"] img {
-        height: 50px !important;
-      }
-      /* Slightly smaller handles for mobile */
-      .ReactCrop__drag-handle {
-        width: 18px !important;
-        height: 18px !important;
-        border-width: 2px !important;
-      }
-    }
-  `}
-      </style>
-
+        {/* ✨ Styling overrides */}
+        <style>
+          {`
+            .ReactCrop__drag-handle {
+              width: 22px !important;
+              height: 22px !important;
+              border: 3px solid #00ffb3 !important;
+              background: rgba(0, 0, 0, 0.4) !important;
+              border-radius: 50% !important;
+              box-shadow: 0 0 6px rgba(0, 255, 179, 0.8) !important;
+              cursor: grab !important;
+            }
+            .ReactCrop__drag-handle:active {
+              background: rgba(0, 255, 179, 0.8) !important;
+              box-shadow: 0 0 10px rgba(0, 255, 179, 1) !important;
+            }
+            .ReactCrop__crop-selection {
+              border: 3px solid rgba(0, 255, 179, 0.8) !important;
+              box-shadow: 0 0 10px rgba(0, 255, 179, 0.4) inset !important;
+            }
+            @media (max-width: 480px) {
+              div[style*="maxWidth: 600px"] {
+                width: 100% !important;
+                height: 75vh !important;
+              }
+              div[style*="overflow-x: auto"] img {
+                height: 50px !important;
+              }
+              .ReactCrop__drag-handle {
+                width: 18px !important;
+                height: 18px !important;
+                border-width: 2px !important;
+              }
+            }
+          `}
+        </style>
+      </div>
     </div>
   );
 }
-
