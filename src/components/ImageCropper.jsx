@@ -459,7 +459,7 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
     }
      @media (max-height: 700px) {
       div[style*="overflow-x: auto"] {
-        bottom: 100px !important; /* raises strip slightly on shorter screens */
+        bottom: 200px !important; /* raises strip slightly on shorter screens */
       }
     }
 
