@@ -11,7 +11,7 @@ import { GlobalToaster, showSuccess, showError, showInfo } from "../utils/toaste
 import { motion } from "framer-motion";
 import BottomNav from "../components/BottomNav";
 
-function ProductCard({ property, onImageClick, navigate, user, onAddToCart }) {
+function ProductCard({ property, onImageClick, navigate, user }) {
   const images = property.imageUrls || property.images || [];
   const fallbackImage = "https://via.placeholder.com/400x250?text=No+Image";
   const sessionId = localStorage.getItem("sessionId");
@@ -29,6 +29,8 @@ function ProductCard({ property, onImageClick, navigate, user, onAddToCart }) {
     }
   };
 
+
+
   const handleContactClick = () => {
     if (!property || !property._id) return;
     trackContactClick(sessionId, user?._id);
@@ -36,7 +38,7 @@ function ProductCard({ property, onImageClick, navigate, user, onAddToCart }) {
   };
 
   return (
-    <div className="listing-wrapper" style={{ position: "relative" }}>
+    <div className="listing" style={{ position: "relative" }} onClick={handleContactClick}>
       {property.listingId && <div className="listing-id-badge">ID: {property.listingId}</div>}
 
       <motion.div
@@ -45,14 +47,14 @@ function ProductCard({ property, onImageClick, navigate, user, onAddToCart }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        onClick={handleContactClick} // ✅ Only card click here
       >
+
         <img
           src={images[0] || fallbackImage}
           alt={property.location || "Property"}
           style={{ cursor: images.length > 0 ? "pointer" : "default" }}
           onClick={(e) => {
-            e.stopPropagation(); // ✅ Prevent card click
+            e.stopPropagation();
             if (images.length) onImageClick(images);
           }}
         />
@@ -112,7 +114,6 @@ function ProductCard({ property, onImageClick, navigate, user, onAddToCart }) {
               </div>
             )}
           </div>
-
           {addedToCart ? (
             <Link
               to="/Cart"
@@ -125,13 +126,14 @@ function ProductCard({ property, onImageClick, navigate, user, onAddToCart }) {
                 borderRadius: "8px",
                 padding: "10px 0",
                 cursor: "pointer",
-                zIndex: 10,
+                zIndex: 10, // ✅ Ensure it’s clickable
                 position: "relative",
               }}
             >
               Go to Cart
             </Link>
           ) : (
+
             <a
               href="#"
               className="btn btn-dark"
@@ -144,19 +146,21 @@ function ProductCard({ property, onImageClick, navigate, user, onAddToCart }) {
               }}
               onClick={async (e) => {
                 e.preventDefault();
-                e.stopPropagation(); // ✅ Prevent parent click
+                e.stopPropagation();
 
-                // Compute fly-to-cart animation
+                // Compute position for fly animation using currentTarget
                 const rect = e.currentTarget.getBoundingClientRect();
                 if (typeof onAddToCart === "function") {
                   onAddToCart(property.listingId, property.imageUrls[0], rect.left, rect.top);
                 }
+
 
                 try {
                   const storedUser = JSON.parse(localStorage.getItem("authUser"));
                   let fetchedName = storedUser?.name || "";
                   let fetchedPhone = storedUser?.phone || "";
 
+                  // ✅ Always check latest user info
                   if (storedUser?.userId) {
                     const res = await fetch(`${API_BASE}/users/check-session`, {
                       method: "GET",
@@ -172,13 +176,14 @@ function ProductCard({ property, onImageClick, navigate, user, onAddToCart }) {
                       const data = await res.json();
                       fetchedName = data?.user?.name || fetchedName;
                       fetchedPhone = data?.user?.phone || fetchedPhone;
+
                       localStorage.setItem(
                         "authUser",
                         JSON.stringify({ ...storedUser, name: fetchedName, phone: fetchedPhone })
                       );
                     } else if (res.status === 401) {
                       console.warn("Session expired — please log in again");
-                      navigate("/auth");
+                      navigate("/auth", { state: { redirectTo: location.pathname } });
                       return;
                     }
                   }
@@ -188,7 +193,7 @@ function ProductCard({ property, onImageClick, navigate, user, onAddToCart }) {
                     return;
                   }
 
-                  // Check if already in cart
+                  // ✅ Check if already saved in cart
                   const checkRes = await fetch(
                     `${API_BASE}/leads/check?userId=${storedUser?.userId}&listingId=${property?.listingId}`
                   );
@@ -199,7 +204,7 @@ function ProductCard({ property, onImageClick, navigate, user, onAddToCart }) {
                     return;
                   }
 
-                  // Save new lead
+                  // ✅ Save new lead
                   await fetch(`${API_BASE}/leads/create`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -222,12 +227,17 @@ function ProductCard({ property, onImageClick, navigate, user, onAddToCart }) {
               Add to Cart
             </a>
           )}
+
+
+
+
         </div>
+
       </motion.div>
+
     </div>
   );
 }
-
 
 export default function ContactPage() {
   const { listingId: paramListingId } = useParams();
@@ -382,8 +392,7 @@ export default function ContactPage() {
         <div className="step-card">
           {isLoading && <p>Loading property...</p>}
           {error && <p className="error">{error}</p>}
-        
-  {property && (
+          {property && (
             <ProductCard
               property={property}
               onImageClick={openModal}
