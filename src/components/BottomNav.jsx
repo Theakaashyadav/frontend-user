@@ -69,7 +69,7 @@ const BottomNav = forwardRef((props, ref) => {
     };
 
     fetchOrdersCount();
-    const interval = setInterval(fetchOrdersCount, 30000);
+    const interval = setInterval(fetchOrdersCount, 3000);
     return () => clearInterval(interval);
   }, [user?.userId, token]);
 
@@ -100,7 +100,7 @@ const BottomNav = forwardRef((props, ref) => {
     };
 
     fetchCartCount();
-    const interval = setInterval(fetchCartCount, 30000);
+    const interval = setInterval(fetchCartCount, 3000);
     return () => clearInterval(interval);
   }, [user?.userId, token]);
 
