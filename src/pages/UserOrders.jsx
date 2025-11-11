@@ -41,21 +41,44 @@ function ProductCard({ property, onDelete, onImageClick, navigate, phoneButtonPr
   return (
     <div className="listing" style={{ position: "relative" }}>
 
-      <input
-        type="checkbox"
-        checked={isChecked}
-        onChange={() => toggleSelect(property.listingId)}
-required
-        style={{
+      {/* ✅ Glowing Checkbox on top-left */}
+<input
+  type="checkbox"
+  checked={isChecked}
+  required
+  onChange={() => onSelect(property.listingId)}
+  style={{
     position: "absolute",
     top: "10px",
     right: "10px",
-    width: "30px",   // increased size
-    height: "30px",  // increased size
+    width: "30px",
+    height: "30px",
     cursor: "pointer",
     zIndex: 3,
+    boxShadow: "0 0 10px 2px #00f", // glowing effect
+    border: "2px solid #00f",       // border to enhance glow
+    borderRadius: "4px",
+    animation: "pulse 1.5s infinite", // pulse animation
   }}
-      />
+/>
+
+{/* Add this CSS somewhere globally or in styled component */}
+<style>
+{`
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 5px 1px #00f;
+    }
+    50% {
+      box-shadow: 0 0 15px 5px #00f;
+    }
+    100% {
+      box-shadow: 0 0 5px 1px #00f;
+    }
+  }
+`}
+</style>
+
 
       {property.listingId && (
         <div className="listing-id-badge">ID: {property.listingId}</div>
