@@ -466,10 +466,10 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
 
 @media (max-width: 480px) {
   .thumbnail-strip img {
-    height: 45px !important;
+    height: 55px !important;
   }
   .thumbnail-strip {
-    bottom: 90px !important;
+    bottom: 100px !important;
   }
 }
 
