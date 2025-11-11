@@ -503,10 +503,7 @@ export default function MyLeads() {
         </table>
 
       )}
-      <div style={{ marginTop: "40px", marginBottom: "30px" }}> <h2 style={{ marginBottom: "12px", color: "#1b1d3a" }}>
-        Your Lead Access Requests </h2> {requestLoading ? (<p>Loading requests...</p>) : requests.length === 0 ? (<p style={{ color: "#6b7280", textAlign: "center" }}>
-          No lead access requests found. </p>) : (<div style={{ width: "100%", overflowX: "auto" }}> <table className="leads-table requests-table" style={{ width: "100%", borderCollapse: "collapse" }}> <thead> <tr style={{ background: "#f3f4f6", color: "#1b1d3a" }}> <th style={{ padding: "10px" }}>#</th> <th style={{ padding: "10px" }}>Phone</th> <th style={{ padding: "10px" }}>Count</th> <th style={{ padding: "10px" }}>Status</th> <th style={{ padding: "10px" }}>Action</th> </tr> </thead> <tbody> {requests.map((req, index) => (<tr key={req._id} style={{ borderBottom: "1px solid #e5e7eb", textAlign: "left", }} > <td style={{ padding: "10px" }}>{index + 1}</td> <td style={{ padding: "10px" }}>{user.phone}</td> <td style={{ padding: "10px" }}>{req.numLeads}</td> <td style={{ padding: "10px" }}> <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: "12px", backgroundColor: "#16a34a", color: "#fff", fontWeight: "600", fontSize: "0.85rem", }} > Processed </span> </td> <td style={{ padding: "10px" }}> <button onClick={() => deleteRequest(req._id)} style={{ background: "#dc2626", color: "#fff", border: "none", padding: "6px 12px", borderRadius: "6px", cursor: "pointer", fontWeight: "600", transition: "background 0.2s ease", }} onMouseOver={(e) => (e.currentTarget.style.background = "#b91c1c")} onMouseOut={(e) => (e.currentTarget.style.background = "#dc2626")} > Delete </button> </td> </tr>))} </tbody> </table> </div>)} </div>
-
+     
 
 
       {/* Request Form */}
@@ -577,6 +574,11 @@ export default function MyLeads() {
         </button>
         {message && <p className="message">{message}</p>}
       </div>
+
+       <div style={{ marginTop: "40px", marginBottom: "30px" }}> <h2 style={{ marginBottom: "12px", color: "#1b1d3a" }}>
+        Your Lead Access Requests </h2> {requestLoading ? (<p>Loading requests...</p>) : requests.length === 0 ? (<p style={{ color: "#6b7280", textAlign: "center" }}>
+          No lead access requests found. </p>) : (<div style={{ width: "100%", overflowX: "auto" }}> <table className="leads-table requests-table" style={{ width: "100%", borderCollapse: "collapse" }}> <thead> <tr style={{ background: "#f3f4f6", color: "#1b1d3a" }}> <th style={{ padding: "10px" }}>#</th> <th style={{ padding: "10px" }}>Phone</th> <th style={{ padding: "10px" }}>Count</th> <th style={{ padding: "10px" }}>Status</th> <th style={{ padding: "10px" }}>Action</th> </tr> </thead> <tbody> {requests.map((req, index) => (<tr key={req._id} style={{ borderBottom: "1px solid #e5e7eb", textAlign: "left", }} > <td style={{ padding: "10px" }}>{index + 1}</td> <td style={{ padding: "10px" }}>{user.phone}</td> <td style={{ padding: "10px" }}>{req.numLeads}</td> <td style={{ padding: "10px" }}> <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: "12px", backgroundColor: "#16a34a", color: "#fff", fontWeight: "600", fontSize: "0.85rem", }} > Processed </span> </td> <td style={{ padding: "10px" }}> <button onClick={() => deleteRequest(req._id)} style={{ background: "#dc2626", color: "#fff", border: "none", padding: "6px 12px", borderRadius: "6px", cursor: "pointer", fontWeight: "600", transition: "background 0.2s ease", }} onMouseOver={(e) => (e.currentTarget.style.background = "#b91c1c")} onMouseOut={(e) => (e.currentTarget.style.background = "#dc2626")} > Delete </button> </td> </tr>))} </tbody> </table> </div>)} </div>
+
 
       <GlobalToaster />
 
