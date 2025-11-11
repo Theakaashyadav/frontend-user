@@ -1,6 +1,6 @@
 import React, { useState, useEffect, forwardRef, useContext } from "react";
 import { NavLink } from "react-router-dom";
-import { Home, ShoppingCart, Package } from "lucide-react";
+import { Home, ShoppingCart, Package, CreditCard } from "lucide-react";
 import { motion } from "framer-motion";
 import { API_BASE } from "../api";
 import { AuthContext } from "../context/AuthContext";
@@ -10,6 +10,7 @@ const BottomNav = forwardRef((props, ref) => {
     { to: "/", label: "Home", icon: <Home size={22} /> },
     { to: "/cart", label: "Cart", icon: <ShoppingCart size={22} /> },
     { to: "/UserOrders", label: "Orders", icon: <Package size={22} /> },
+    { to: "/buy-credits", label: "Credits", icon: <CreditCard size={22} /> },
   ];
 
   const { user, token } = useContext(AuthContext);
