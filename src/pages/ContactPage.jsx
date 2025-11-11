@@ -382,8 +382,7 @@ export default function ContactPage() {
         <div className="step-card">
           {isLoading && <p>Loading property...</p>}
           {error && <p className="error">{error}</p>}
-          {property && (
-            
+        
 {property && (
   <ProductCard
     property={property}
@@ -394,7 +393,6 @@ export default function ContactPage() {
       const animateToCart = () => {
         const navRect = cartRef.current?.getBoundingClientRect(); // BottomNav container
         if (!navRect) {
-          // Retry next frame
           requestAnimationFrame(animateToCart);
           return;
         }
@@ -412,8 +410,8 @@ export default function ContactPage() {
           imageUrl,
           startX,
           startY,
-          endX: cartCenterX - 20, // adjust for fly image width
-          endY: cartCenterY - 14, // adjust for fly image height
+          endX: cartCenterX - 20,
+          endY: cartCenterY - 14,
         });
       };
 
