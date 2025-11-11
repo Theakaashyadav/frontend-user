@@ -316,7 +316,7 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
           <div
             style={{
               position: "fixed",
-              bottom: "60px", // keeps it above the button bar
+              bottom: "150px", // keeps it above the button bar
               left: 0,
               width: "100%",
               display: "flex",
