@@ -314,7 +314,8 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
         {/* 🖼 Thumbnails Strip */}
         {cropModal.allImages?.length > 1 && (
           <div
-            style={{
+  className="thumbnail-strip"
+  style={{
               position: "fixed",
               bottom: "80px", // keeps it above the button bar
               left: 0,
@@ -458,19 +459,20 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
       }
     }
      @media (max-height: 700px) {
-      div[style*="overflow-x: auto"] {
-        bottom: 200px !important; /* raises strip slightly on shorter screens */
-      }
-    }
+  .thumbnail-strip {
+    bottom: 200px !important; /* raises strip slightly on shorter screens */
+  }
+}
 
-    @media (max-width: 480px) {
-      div[style*="overflow-x: auto"] img {
-        height: 45px !important;
-      }
-      div[style*="overflow-x: auto"] {
-        bottom: 90px !important;
-      }
-    }
+@media (max-width: 480px) {
+  .thumbnail-strip img {
+    height: 45px !important;
+  }
+  .thumbnail-strip {
+    bottom: 90px !important;
+  }
+}
+
   `}
       </style>
 
