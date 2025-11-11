@@ -383,11 +383,7 @@ export default function ContactPage() {
           {isLoading && <p>Loading property...</p>}
           {error && <p className="error">{error}</p>}
           {property && (
-            <ProductCard
-              property={property}
-              onImageClick={openModal}
-              navigate={navigate}
-              user={user}
+            
 <ProductCard
   property={property}
   onImageClick={openModal}
