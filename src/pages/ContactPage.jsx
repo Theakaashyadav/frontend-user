@@ -383,43 +383,39 @@ export default function ContactPage() {
           {isLoading && <p>Loading property...</p>}
           {error && <p className="error">{error}</p>}
         
-{property && (
-  <ProductCard
-    property={property}
-    onImageClick={openModal}
-    navigate={navigate}
-    user={user}
-    onAddToCart={(listingId, imageUrl, startX, startY) => {
-      const animateToCart = () => {
-        const navRect = cartRef.current?.getBoundingClientRect(); // BottomNav container
-        if (!navRect) {
-          requestAnimationFrame(animateToCart);
-          return;
-        }
+ {property && (
+            <ProductCard
+              property={property}
+              onImageClick={openModal}
+              navigate={navigate}
+              user={user}
+              onAddToCart={(listingId, imageUrl, startX, startY) => {
+                const animateToCart = () => {
+                  const cartRect = cartRef.current?.getBoundingClientRect();
+                  if (!cartRect) {
+                    // Retry next frame
+                    requestAnimationFrame(animateToCart);
+                    return;
+                  }
 
-        const navWidth = navRect.width;
-        const navLeft = navRect.left;
+                  setFlyToCart({
+                    listingId,
+                    imageUrl,
+                    startX,
+                    startY,
+                    endX: cartRect.left + cartRect.width / 2 - 5, // center of cart icon
+                    endY: cartRect.top + cartRect.height / 2 - 3,
+                  });
+                };
 
-        // Cart is second item of 4
-        const itemWidth = navWidth / 4;
-        const cartCenterX = navLeft + itemWidth * 1.5; // center of second item
-        const cartCenterY = navRect.top + navRect.height / 2; // vertical center
+                requestAnimationFrame(animateToCart);
+              }}
 
-        setFlyToCart({
-          listingId,
-          imageUrl,
-          startX,
-          startY,
-          endX: cartCenterX - 20,
-          endY: cartCenterY - 14,
-        });
-      };
+            />
 
-      requestAnimationFrame(animateToCart);
-    }}
-  />
-)}
 
+
+          )}
         </div>
       </div>
 
