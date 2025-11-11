@@ -316,7 +316,7 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
           <div
             style={{
               position: "fixed",
-              bottom: "300px", // keeps it above the button bar
+              bottom: "80px", // keeps it above the button bar
               left: 0,
               width: "100%",
               display: "flex",
@@ -331,6 +331,8 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
               msOverflowStyle: "none",
               zIndex: 10001, // ✅ above the dark background, below buttons
               // below button bar
+
+              
             }}
           >
             {cropModal.allImages.map((img, index) => {
@@ -453,6 +455,20 @@ export default function ImageCropper({ cropModal, setCropModal, files, setFiles 
         width: 18px !important;
         height: 18px !important;
         border-width: 2px !important;
+      }
+    }
+     @media (max-height: 700px) {
+      div[style*="overflow-x: auto"] {
+        bottom: 100px !important; /* raises strip slightly on shorter screens */
+      }
+    }
+
+    @media (max-width: 480px) {
+      div[style*="overflow-x: auto"] img {
+        height: 45px !important;
+      }
+      div[style*="overflow-x: auto"] {
+        bottom: 90px !important;
       }
     }
   `}
