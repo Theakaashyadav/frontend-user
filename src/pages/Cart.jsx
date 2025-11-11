@@ -47,20 +47,23 @@ function ProductCard({ property, onDelete, onImageClick, navigate, user, phoneBu
   return (
     <div className="listing" style={{ position: "relative" }}>
       {/* ✅ Checkbox on top-left */}
-      <input
-        type="checkbox"
-        checked={isChecked}
-        onChange={() => onSelect(property.listingId)}
-        style={{
-          position: "absolute",
-          top: "10px",
-          right: "10px", // ✅ lowercase 'r'
-          width: "20px",
-          height: "20px",
-          cursor: "pointer",
-          zIndex: 3,
-        }}
-      />
+      {/* ✅ Checkbox on top-left */}
+<input
+  type="checkbox"
+  checked={isChecked}
+  required
+  onChange={() => onSelect(property.listingId)}
+  style={{
+    position: "absolute",
+    top: "10px",
+    right: "10px",
+    width: "30px",   // increased size
+    height: "30px",  // increased size
+    cursor: "pointer",
+    zIndex: 3,
+  }}
+/>
+
 
       {property.listingId && (
         <div className="listing-id-badge">ID: {property.listingId}</div>
