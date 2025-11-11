@@ -635,7 +635,7 @@ export default function AuthPage() {
   <label htmlFor="terms" style={styles.termsLabel}>
     I agree to the{" "}
     <Link
-      to="/t&c"
+      to="/terms"
       style={styles.termsLink}
       onMouseEnter={(e) =>
         Object.assign(e.currentTarget.style, styles.termsLinkHover)
