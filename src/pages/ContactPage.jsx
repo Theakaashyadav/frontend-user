@@ -388,33 +388,36 @@ export default function ContactPage() {
               onImageClick={openModal}
               navigate={navigate}
               user={user}
-              onAddToCart={(listingId, imageUrl, startX, startY) => {
-                const animateToCart = () => {
-                  const cartRect = cartRef.current?.getBoundingClientRect();
-                  if (!cartRect) {
-                    // Retry next frame
-                    requestAnimationFrame(animateToCart);
-                    return;
-                  }
+             onAddToCart={(listingId, imageUrl, startX, startY) => {
+  const animateToCart = () => {
+    const navRect = cartRef.current?.getBoundingClientRect(); // BottomNav container
+    if (!navRect) {
+      // Retry next frame
+      requestAnimationFrame(animateToCart);
+      return;
+    }
 
-                  setFlyToCart({
-                    listingId,
-                    imageUrl,
-                    startX,
-                    startY,
-                    endX: cartRect.left + cartRect.width / 2 - 20, // center of cart icon
-                    endY: cartRect.top + cartRect.height / 2 - 14,
-                  });
-                };
+    const navWidth = navRect.width;
+    const navLeft = navRect.left;
 
-                requestAnimationFrame(animateToCart);
-              }}
+    // Cart is second item of 4
+    const itemWidth = navWidth / 4;
+    const cartCenterX = navLeft + itemWidth * 1.5; // center of second item
+    const cartCenterY = navRect.top + navRect.height / 2; // vertical center
 
-            />
+    setFlyToCart({
+      listingId,
+      imageUrl,
+      startX,
+      startY,
+      endX: cartCenterX - 20, // adjust for fly image width
+      endY: cartCenterY - 14, // adjust for fly image height
+    });
+  };
 
+  requestAnimationFrame(animateToCart);
+}}
 
-
-          )}
         </div>
       </div>
 
