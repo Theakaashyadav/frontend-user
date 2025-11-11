@@ -388,35 +388,41 @@ export default function ContactPage() {
               onImageClick={openModal}
               navigate={navigate}
               user={user}
-             onAddToCart={(listingId, imageUrl, startX, startY) => {
-  const animateToCart = () => {
-    const navRect = cartRef.current?.getBoundingClientRect(); // BottomNav container
-    if (!navRect) {
-      // Retry next frame
-      requestAnimationFrame(animateToCart);
-      return;
-    }
+<ProductCard
+  property={property}
+  onImageClick={openModal}
+  navigate={navigate}
+  user={user}
+  onAddToCart={(listingId, imageUrl, startX, startY) => {
+    const animateToCart = () => {
+      const navRect = cartRef.current?.getBoundingClientRect(); // BottomNav container
+      if (!navRect) {
+        // Retry next frame
+        requestAnimationFrame(animateToCart);
+        return;
+      }
 
-    const navWidth = navRect.width;
-    const navLeft = navRect.left;
+      const navWidth = navRect.width;
+      const navLeft = navRect.left;
 
-    // Cart is second item of 4
-    const itemWidth = navWidth / 4;
-    const cartCenterX = navLeft + itemWidth * 1.5; // center of second item
-    const cartCenterY = navRect.top + navRect.height / 2; // vertical center
+      // Cart is second item of 4
+      const itemWidth = navWidth / 4;
+      const cartCenterX = navLeft + itemWidth * 1.5; // center of second item
+      const cartCenterY = navRect.top + navRect.height / 2; // vertical center
 
-    setFlyToCart({
-      listingId,
-      imageUrl,
-      startX,
-      startY,
-      endX: cartCenterX - 20, // adjust for fly image width
-      endY: cartCenterY - 14, // adjust for fly image height
-    });
-  };
+      setFlyToCart({
+        listingId,
+        imageUrl,
+        startX,
+        startY,
+        endX: cartCenterX - 20, // adjust for fly image width
+        endY: cartCenterY - 14, // adjust for fly image height
+      });
+    };
 
-  requestAnimationFrame(animateToCart);
-}}
+    requestAnimationFrame(animateToCart);
+  }}
+/>
 
         </div>
       </div>
