@@ -1,7 +1,9 @@
-import React, { forwardRef } from "react";
+import React, { useState, useEffect, forwardRef, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { Home, ShoppingCart, Package } from "lucide-react";
 import { motion } from "framer-motion";
+import { API_BASE } from "../api";
+import { AuthContext } from "../context/AuthContext";
 
 const BottomNav = forwardRef((props, ref) => {
   const links = [
@@ -9,6 +11,89 @@ const BottomNav = forwardRef((props, ref) => {
     { to: "/cart", label: "Cart", icon: <ShoppingCart size={22} /> },
     { to: "/UserOrders", label: "Orders", icon: <Package size={22} /> },
   ];
+
+  const { user, token } = useContext(AuthContext);
+  const [ordersCount, setOrdersCount] = useState(0);
+  const [cartCount, setCartCount] = useState(0);
+
+  // Fetch orders count
+  useEffect(() => {
+    const fetchOrdersCount = async () => {
+      if (!user?.userId) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/cart/${user.userId}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token ? `Bearer ${token}` : undefined,
+          },
+        });
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        const cartData = await res.json();
+
+        const listingIds = Array.isArray(cartData) && cartData.length > 0
+          ? cartData[0].listingIds || []
+          : [];
+
+        if (listingIds.length === 0) {
+          setOrdersCount(0);
+          return;
+        }
+
+        const propertiesRes = await fetch(`${API_BASE}/properties`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token ? `Bearer ${token}` : undefined,
+          },
+        });
+        const allProperties = await propertiesRes.json();
+
+        const matched = allProperties.filter((p) =>
+          listingIds.includes(p.listingId)
+        );
+
+        setOrdersCount(matched.length);
+      } catch (err) {
+        console.error("Error fetching orders count:", err);
+        setOrdersCount(0);
+      }
+    };
+
+    fetchOrdersCount();
+    const interval = setInterval(fetchOrdersCount, 30000);
+    return () => clearInterval(interval);
+  }, [user?.userId, token]);
+
+  // Fetch cart count
+  useEffect(() => {
+    const fetchCartCount = async () => {
+      if (!user?.userId) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/leads/user/${user.userId}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token ? `Bearer ${token}` : undefined,
+          },
+        });
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        const data = await res.json();
+
+        const allListingIds = data.flatMap(lead =>
+          lead.owners.flatMap(owner => owner.listingIds || [])
+        );
+
+        setCartCount(allListingIds.length);
+      } catch (err) {
+        console.error("Error fetching cart count:", err);
+        setCartCount(0);
+      }
+    };
+
+    fetchCartCount();
+    const interval = setInterval(fetchCartCount, 30000);
+    return () => clearInterval(interval);
+  }, [user?.userId, token]);
 
   return (
     <nav
@@ -30,6 +115,7 @@ const BottomNav = forwardRef((props, ref) => {
     >
       {links.map((link, index) => {
         const isCart = link.label.toLowerCase() === "cart";
+        const isOrders = link.label.toLowerCase() === "orders";
 
         return (
           <NavLink
@@ -57,18 +143,58 @@ const BottomNav = forwardRef((props, ref) => {
                   gap: "3px",
                 }}
               >
-                <div
-                  style={{ position: "relative" }}
-                  ref={isCart ? ref : null} // attach ref only to cart icon
-                >
+                <div style={{ position: "relative" }} ref={isCart || isOrders ? ref : null}>
                   {link.icon}
+
+                  {/* Cart count badge */}
+                  {isCart && cartCount > 0 && (
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "-6px",
+                        right: "-0px",
+                        background: "red",
+                        color: "#fff",
+                        borderRadius: "50%",
+                        padding: "0px 0px",
+                        fontSize: "0.6rem",
+                        fontWeight: 600,
+                        minWidth: "12px",
+                        textAlign: "center",
+                      }}
+                    >
+                      {cartCount}
+                    </span>
+                  )}
+
+                  {/* Orders count badge */}
+                  {isOrders && ordersCount > 0 && (
+                    <span
+                       style={{
+                        position: "absolute",
+                        top: "-5px",
+                        right: "-0px",
+                        background: "red",
+                        color: "#fff",
+                        borderRadius: "50%",
+                        padding: "0px 0px",
+                        fontSize: "0.6rem",
+                        fontWeight: 600,
+                        minWidth: "12px",
+                        textAlign: "center",
+                      }}
+                    >
+                      {ordersCount}
+                    </span>
+                  )}
+
                   {isActive && (
                     <motion.div
                       layoutId="activeDot"
                       style={{
                         position: "absolute",
-                        bottom: "-6px",
-                        left: "50%",
+                        bottom: "-4px",
+                        left: "40%",
                         transform: "translateX(-50%)",
                         width: "6px",
                         height: "6px",
