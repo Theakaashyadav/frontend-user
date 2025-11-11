@@ -407,14 +407,16 @@ export default function ContactPage() {
                     return;
                   }
 
-                  setFlyToCart({
-                    listingId,
-                    imageUrl,
-                    startX,
-                    startY,
-                    endX: cartRect.left + cartRect.width / 2 - 20, // center of cart icon
-                    endY: cartRect.top + cartRect.height / 2 - 14,
-                  });
+                 
+                 setFlyToCart({
+  listingId,
+  imageUrl,
+  startX,
+  startY,
+  endX: startX - (cartRect.left + cartRect.width / 2 - 20 - startX), // flip horizontally
+  endY: cartRect.top + cartRect.height / 2 - 14,
+});
+
                 };
 
                 requestAnimationFrame(animateToCart);
