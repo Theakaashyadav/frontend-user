@@ -16,11 +16,19 @@ const BottomNav = forwardRef((props, ref) => {
   const [ordersCount, setOrdersCount] = useState(0);
   const [cartCount, setCartCount] = useState(0);
 
+  // Reset counts if user logs out
+  useEffect(() => {
+    if (!user?.userId) {
+      setOrdersCount(0);
+      setCartCount(0);
+    }
+  }, [user]);
+
   // Fetch orders count
   useEffect(() => {
-    const fetchOrdersCount = async () => {
-      if (!user?.userId) return;
+    if (!user?.userId) return; // exit if not logged in
 
+    const fetchOrdersCount = async () => {
       try {
         const res = await fetch(`${API_BASE}/cart/${user.userId}`, {
           headers: {
@@ -66,9 +74,9 @@ const BottomNav = forwardRef((props, ref) => {
 
   // Fetch cart count
   useEffect(() => {
-    const fetchCartCount = async () => {
-      if (!user?.userId) return;
+    if (!user?.userId) return; // exit if not logged in
 
+    const fetchCartCount = async () => {
       try {
         const res = await fetch(`${API_BASE}/leads/user/${user.userId}`, {
           headers: {
@@ -146,13 +154,12 @@ const BottomNav = forwardRef((props, ref) => {
                 <div style={{ position: "relative" }} ref={isCart || isOrders ? ref : null}>
                   {link.icon}
 
-                  {/* Cart count badge */}
                   {isCart && cartCount > 0 && (
                     <span
                       style={{
                         position: "absolute",
                         top: "-6px",
-                        right: "-0px",
+                        right: "0px",
                         background: "red",
                         color: "#fff",
                         borderRadius: "50%",
@@ -167,13 +174,12 @@ const BottomNav = forwardRef((props, ref) => {
                     </span>
                   )}
 
-                  {/* Orders count badge */}
                   {isOrders && ordersCount > 0 && (
                     <span
-                       style={{
+                      style={{
                         position: "absolute",
                         top: "-5px",
-                        right: "-0px",
+                        right: "0px",
                         background: "red",
                         color: "#fff",
                         borderRadius: "50%",
