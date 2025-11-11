@@ -42,6 +42,7 @@ function ProductCard({ property, onDelete, onImageClick, navigate, phoneButtonPr
     <div className="listing" style={{ position: "relative" }}>
 
       {/* ✅ Glowing Checkbox on top-left */}
+{/* ✅ Glowing Checkbox on top-left */}
 <input
   type="checkbox"
   checked={isChecked}
@@ -58,7 +59,7 @@ function ProductCard({ property, onDelete, onImageClick, navigate, phoneButtonPr
     boxShadow: "0 0 10px 2px #1B1D3A", // glowing effect
     border: "2px solid #1B1D3A",       // border to enhance glow
     borderRadius: "4px",
-    animation: "pulse 1.5s infinite", // pulse animation
+    animation: "pulse 1.5s infinite",   // pulse animation
   }}
 />
 
@@ -67,17 +68,18 @@ function ProductCard({ property, onDelete, onImageClick, navigate, phoneButtonPr
 {`
   @keyframes pulse {
     0% {
-      box-shadow: 0 0 5px 1px #00f;
+      box-shadow: 0 0 5px 1px #1B1D3A;
     }
     50% {
-      box-shadow: 0 0 15px 5px #00f;
+      box-shadow: 0 0 15px 5px #1B1D3A;
     }
     100% {
-      box-shadow: 0 0 5px 1px #00f;
+      box-shadow: 0 0 5px 1px #1B1D3A;
     }
   }
 `}
 </style>
+
 
 
       {property.listingId && (
