@@ -55,8 +55,8 @@ function ProductCard({ property, onDelete, onImageClick, navigate, phoneButtonPr
     height: "30px",
     cursor: "pointer",
     zIndex: 3,
-    boxShadow: "0 0 10px 2px #00f", // glowing effect
-    border: "2px solid #00f",       // border to enhance glow
+    boxShadow: "0 0 10px 2px #1B1D3A", // glowing effect
+    border: "2px solid #1B1D3A",       // border to enhance glow
     borderRadius: "4px",
     animation: "pulse 1.5s infinite", // pulse animation
   }}
