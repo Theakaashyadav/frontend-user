@@ -48,6 +48,7 @@ function ProductCard({ property, onDelete, onImageClick, navigate, user, phoneBu
     <div className="listing" style={{ position: "relative" }}>
       {/* ✅ Checkbox on top-left */}
       {/* ✅ Checkbox on top-left */}
+{/* ✅ Glowing Checkbox on top-left */}
 <input
   type="checkbox"
   checked={isChecked}
@@ -57,12 +58,34 @@ function ProductCard({ property, onDelete, onImageClick, navigate, user, phoneBu
     position: "absolute",
     top: "10px",
     right: "10px",
-    width: "30px",   // increased size
-    height: "30px",  // increased size
+    width: "30px",
+    height: "30px",
     cursor: "pointer",
     zIndex: 3,
+    boxShadow: "0 0 10px 2px #1B1D3A", // glowing effect
+    border: "2px solid #1B1D3A",       // border to enhance glow
+    borderRadius: "4px",
+    animation: "pulse 1.5s infinite",   // pulse animation
   }}
 />
+
+{/* Add this CSS somewhere globally or in styled component */}
+<style>
+{`
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 5px 1px #1B1D3A;
+    }
+    50% {
+      box-shadow: 0 0 15px 5px #1B1D3A;
+    }
+    100% {
+      box-shadow: 0 0 5px 1px #1B1D3A;
+    }
+  }
+`}
+</style>
+
 
 
       {property.listingId && (
