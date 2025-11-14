@@ -351,7 +351,9 @@ export default function ContactPage() {
         border: "none",
         marginBottom: "30px",
       }}
-      onClick={handleAddToCartClick}
+      onClick={(e) => {
+    e.stopPropagation();       // ✅ prevent navigating away
+    handleAddToCartClick(e);
     >
       Add to Cart
     </button>
