@@ -278,7 +278,7 @@ export default function ContactPage() {
     <div className="contact-page container contact-container">
 
       <BottomNav ref={cartRef} />
-      <div className="steps-wrapper" onClick={handleContactClick}>
+      <div className="steps-wrapper" >
 
         
           {isLoading && <p>Loading property...</p>}
