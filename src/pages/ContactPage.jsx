@@ -373,7 +373,7 @@ export default function ContactPage() {
         padding: "14px 0",
         zIndex: 1200,
         opacity: 0.8,
-        marginBottom: "20px",
+        marginBottom: "30px",
       }}
     >
       Added to Cart
@@ -406,7 +406,7 @@ export default function ContactPage() {
         borderRadius: "10px",
         padding: "14px 0",
         zIndex: 1200,
-        marginBottom: "20px",
+        marginBottom: "30px",
       }}
       onClick={async (e) => {
       e.preventDefault();
