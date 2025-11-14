@@ -37,6 +37,11 @@ const [selectedPackage, setSelectedPackage] = useState(null);
     setSessionToken(token);
   }, []);
 
+  useEffect(() => {
+  console.log("AndroidDownloader:", window?.AndroidDownloader);
+}, []);
+
+
   // Auto-generate QR when package or amount changes
 useEffect(() => {
   if (selectedPackage) {
@@ -538,11 +543,11 @@ if (hasPending) {
         {/* ✅ Download QR Button */}
         <button
           onClick={() => {
-    if (window.AndroidDownloader) {
+    if (window?.AndroidDownloader?.downloadFile) {
       // Android WebView
       window.AndroidDownloader.downloadFile(qrCodeUrl);
     } else {
-      // Browser
+      // Browser fallback
       const link = document.createElement("a");
       link.href = qrCodeUrl;
       link.download = `UPI_QR_${selectedPackage || "payment"}.png`;
@@ -550,7 +555,7 @@ if (hasPending) {
       link.click();
       document.body.removeChild(link);
     }
-          }}
+  }}
           style={{
             marginTop: "1rem",
             background: "#1b1d3a",
