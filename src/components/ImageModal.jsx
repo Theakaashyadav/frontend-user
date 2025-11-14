@@ -129,8 +129,8 @@ export default function ImageModal({
 
         .close-btn {
           position: absolute;
-          top: 10px;
-          right: 10px;
+          top: 5px;
+          right: 5px;
           font-size: 2rem;
           color: white;
           cursor: pointer;
