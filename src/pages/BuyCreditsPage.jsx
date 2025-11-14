@@ -543,19 +543,23 @@ if (hasPending) {
         {/* ✅ Download QR Button */}
         <button
           onClick={() => {
-    if (window?.AndroidDownloader?.downloadFile) {
-      // Android WebView
-      window.AndroidDownloader.downloadFile(qrCodeUrl);
-    } else {
-      // Browser fallback
-      const link = document.createElement("a");
-      link.href = qrCodeUrl;
-      link.download = `UPI_QR_${selectedPackage || "payment"}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  }}
+  if (window?.AndroidDownloader?.downloadFile) {
+    // Android WebView: Use native downloader
+    window.AndroidDownloader.downloadFile(qrCodeUrl);
+  } else if (qrCodeUrl) {
+    // Browser fallback: create a temporary link to download
+    const filename = `UPI_QR_${selectedPackage || "payment"}.png`;
+    const link = document.createElement("a");
+    link.href = qrCodeUrl;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } else {
+    console.error("QR code URL is not defined");
+  }
+}}
+
           style={{
             marginTop: "1rem",
             background: "#1b1d3a",
