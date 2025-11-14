@@ -299,58 +299,66 @@ export default function ContactPage() {
 
 
       {/* Fixed Add to Cart / Added to Cart button above BottomNav */}
-      <div
-        style={{
-          position: "fixed",
-          bottom: "60px",
-          left: 0,
-          width: "100%",
-          background: "#1B1D3A",
-          height: "80px",
-          zIndex: 800,
-          backdropFilter: "blur(6px)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        {addedToCart ? (
-          <button
-            className="btn btn-dark"
-            style={{
-              width: "50%",
-              background: "#F2C94C",
-              color: "#000000ff",
-              textAlign: "center",
-              borderRadius: "10px",
-              padding: "14px 0",
-              zIndex: 1200,
-              opacity: 0.8,
-              marginBottom: "30px",
-            }}
-            disabled
-          >
-            Added to Cart
-          </button>
-        ) : (
-          <button
-            className="btn btn-dark"
-            style={{
-              width: "50%",
-              background: "#707070ff",
-              color: "#ffffff",
-              textAlign: "center",
-              borderRadius: "10px",
-              padding: "14px 0",
-              zIndex: 1200,
-              marginBottom: "30px",
-            }}
-            onClick={handleAddToCartClick}
-          >
-            Add to Cart
-          </button>
-        )}
-      </div>
+<div
+  style={{
+    position: "fixed",
+    bottom: 0, // stick to bottom
+    left: 0,
+    width: "100%",
+    background: "#1B1D3A",
+    height: "80px",
+    zIndex: 800,
+    backdropFilter: "blur(6px)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "0 10px", // small side padding for responsiveness
+    boxSizing: "border-box",
+  }}
+>
+  {addedToCart ? (
+    <button
+      type="button"
+      className="btn btn-dark"
+      style={{
+        width: "90%",
+        maxWidth: "400px",
+        background: "#F2C94C",
+        color: "#000",
+        textAlign: "center",
+        borderRadius: "10px",
+        padding: "14px 0",
+        cursor: "not-allowed", // indicate disabled
+        border: "none",
+        boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+      }}
+      disabled
+    >
+      Added to Cart
+    </button>
+  ) : (
+    <button
+      type="button"
+      className="btn btn-dark"
+      style={{
+        width: "90%",
+        maxWidth: "400px",
+        background: "#707070",
+        color: "#fff",
+        textAlign: "center",
+        borderRadius: "10px",
+        padding: "14px 0",
+        cursor: "pointer",
+        border: "none",
+        boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+      }}
+      onClick={handleAddToCartClick}
+    >
+      Add to Cart
+    </button>
+  )}
+</div>
+
 
 
       <GlobalToaster />
