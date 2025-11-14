@@ -159,6 +159,11 @@ export default function ContactPage() {
         return;
       }
 
+const handleContactClick = () => {
+  navigate(`/contact/${property.listingId}`, {
+    state: { property },
+  });
+};
 
 
 
