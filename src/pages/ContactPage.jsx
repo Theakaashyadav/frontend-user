@@ -406,16 +406,10 @@ export default function ContactPage() {
         zIndex: 1200,
         marginBottom: "30px",
       }}
-     onClick={(e) => {
-  e.preventDefault();
-  e.stopImmediatePropagation();
-  e.stopPropagation();
-}}
-onTouchStart={(e) => {
-  e.preventDefault();
-  e.stopImmediatePropagation();
-  e.stopPropagation();
-}}
+      onClick={async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
 
       const rect = e.currentTarget.getBoundingClientRect();
       if (typeof onAddToCart === "function") {
