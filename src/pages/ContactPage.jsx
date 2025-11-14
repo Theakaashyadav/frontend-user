@@ -395,9 +395,7 @@ export default function ContactPage() {
       alignItems: "center",
     }}
   >
-    <a
-      href="#"
-      className="btn btn-dark"
+   <button type="button" className="btn btn-dark"
       style={{
         width: "50%",
         background: "#707070ff",
@@ -408,9 +406,16 @@ export default function ContactPage() {
         zIndex: 1200,
         marginBottom: "30px",
       }}
-      onClick={async (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+     onClick={(e) => {
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  e.stopPropagation();
+}}
+onTouchStart={(e) => {
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  e.stopPropagation();
+}}
 
       const rect = e.currentTarget.getBoundingClientRect();
       if (typeof onAddToCart === "function") {
@@ -484,7 +489,7 @@ export default function ContactPage() {
       }}
     >
       Add to Cart
-    </a>
+    </button>
   </div>
 )}
 
