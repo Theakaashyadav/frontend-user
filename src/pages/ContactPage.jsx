@@ -202,10 +202,6 @@ export default function ContactPage() {
     e.preventDefault();
     e.stopPropagation();
 
-    const rect = e.currentTarget.getBoundingClientRect();
-    if (typeof onAddToCart === "function" && property) {
-      onAddToCart(property.listingId, property.imageUrls[0], rect.left, rect.top);
-    }
 
     try {
       const storedUser = JSON.parse(localStorage.getItem("authUser"));
@@ -352,9 +348,10 @@ export default function ContactPage() {
         marginBottom: "30px",
       }}
       onClick={(e) => {
-    e.stopPropagation();       // ✅ prevent navigating away
-    handleAddToCartClick(e);
-    >
+      e.stopPropagation();
+      handleAddToCartClick(e);
+    }}
+  >
       Add to Cart
     </button>
   )}
