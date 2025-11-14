@@ -114,121 +114,7 @@ function ProductCard({ property, onImageClick, navigate, user }) {
               </div>
             )}
           </div>
-          {addedToCart ? (
-            <Link
-              to="/Cart"
-              onClick={(e) => e.stopPropagation()} // ✅ Prevent parent click
-              className="btn btn-dark"
-              style={{
-                display: "block",
-                marginTop: "1rem",
-                textAlign: "center",
-                borderRadius: "8px",
-                padding: "10px 0",
-                cursor: "pointer",
-                zIndex: 10, // ✅ Ensure it’s clickable
-                position: "relative",
-              }}
-            >
-              Go to Cart
-            </Link>
-          ) : (
-
-            <a
-              href="#"
-              className="btn btn-dark"
-              style={{
-                display: "block",
-                marginTop: "1rem",
-                textAlign: "center",
-                borderRadius: "8px",
-                padding: "10px 0",
-              }}
-              onClick={async (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-
-                // Compute position for fly animation using currentTarget
-                const rect = e.currentTarget.getBoundingClientRect();
-                if (typeof onAddToCart === "function") {
-                  onAddToCart(property.listingId, property.imageUrls[0], rect.left, rect.top);
-                }
-
-
-                try {
-                  const storedUser = JSON.parse(localStorage.getItem("authUser"));
-                  let fetchedName = storedUser?.name || "";
-                  let fetchedPhone = storedUser?.phone || "";
-
-                  // ✅ Always check latest user info
-                  if (storedUser?.userId) {
-                    const res = await fetch(`${API_BASE}/users/check-session`, {
-                      method: "GET",
-                      headers: {
-                        "Content-Type": "application/json",
-                        "x-session-token": localStorage.getItem("sessionToken") || "",
-                        "x-user-id": storedUser.userId,
-                      },
-                      credentials: "include",
-                    });
-
-                    if (res.ok) {
-                      const data = await res.json();
-                      fetchedName = data?.user?.name || fetchedName;
-                      fetchedPhone = data?.user?.phone || fetchedPhone;
-
-                      localStorage.setItem(
-                        "authUser",
-                        JSON.stringify({ ...storedUser, name: fetchedName, phone: fetchedPhone })
-                      );
-                    } else if (res.status === 401) {
-                      console.warn("Session expired — please log in again");
-                      navigate("/auth", { state: { redirectTo: location.pathname } });
-                      return;
-                    }
-                  }
-
-                  if (!fetchedName || !fetchedPhone || !(property?.userId || property?.ownerId)) {
-                    console.error("Missing user info or property owner");
-                    return;
-                  }
-
-                  // ✅ Check if already saved in cart
-                  const checkRes = await fetch(
-                    `${API_BASE}/leads/check?userId=${storedUser?.userId}&listingId=${property?.listingId}`
-                  );
-                  const checkData = await checkRes.json();
-                  if (checkData?.exists) {
-                    showInfo(" Already saved in cart");
-                    setAddedToCart(true);
-                    return;
-                  }
-
-                  // ✅ Save new lead
-                  await fetch(`${API_BASE}/leads/create`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                      name: fetchedName,
-                      phone: fetchedPhone,
-                      listingId: property?.listingId,
-                      userId: storedUser?.userId,
-                      ownerId: property?.userId || property?.ownerId,
-                    }),
-                  });
-
-                  showSuccess(" Added to cart");
-                  setAddedToCart(true);
-                } catch (err) {
-                  console.error("Error adding to cart:", err);
-                }
-              }}
-            >
-              Add to Cart
-            </a>
-          )}
-
-
+         
 
 
         </div>
@@ -389,7 +275,7 @@ export default function ContactPage() {
 
       <BottomNav ref={cartRef} />
       <div className="steps-wrapper">
-        <div className="step-card">
+        
           {isLoading && <p>Loading property...</p>}
           {error && <p className="error">{error}</p>}
           {property && (
@@ -427,7 +313,7 @@ export default function ContactPage() {
 
 
           )}
-        </div>
+        
       </div>
 
       {modalImages.length > 0 && (
@@ -457,6 +343,149 @@ export default function ContactPage() {
         />
       )}
 
+
+{addedToCart ? (
+  <div
+    style={{
+      position: "fixed",
+      bottom: "60px",
+      left: 0,
+      width: "100%",
+      background: "#1B1D3A",
+      height: "70px",
+      zIndex: 800,
+      backdropFilter: "blur(6px)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    }}
+  >
+    <button
+      className="btn btn-dark"
+      disabled
+      style={{
+        width: "50%",
+        background: "#F2C94C",
+        color: "#000000ff",
+        textAlign: "center",
+        borderRadius: "10px",
+        padding: "14px 0",
+        zIndex: 1200,
+        opacity: 0.8,
+        marginBottom: "20px",
+      }}
+    >
+      Added to Cart
+    </button>
+  </div>
+) : (
+  <div
+    style={{
+      position: "fixed",
+      bottom: "60px",
+      left: 0,
+      width: "100%",
+      background: "#1B1D3A",
+      height: "70px",
+      zIndex: 800,
+      backdropFilter: "blur(6px)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    }}
+  >
+    <a
+      href="#"
+      className="btn btn-dark"
+      style={{
+        width: "50%",
+        background: "#707070ff",
+        color: "#ffffff",
+        textAlign: "center",
+        borderRadius: "10px",
+        padding: "14px 0",
+        zIndex: 1200,
+        marginBottom: "20px",
+      }}
+      onClick={async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const rect = e.currentTarget.getBoundingClientRect();
+      if (typeof onAddToCart === "function") {
+        onAddToCart(property.listingId, images[0], rect.left, rect.top);
+      }
+
+      try {
+        const storedUser = JSON.parse(localStorage.getItem("authUser"));
+        let fetchedName = storedUser?.name || "";
+        let fetchedPhone = storedUser?.phone || "";
+
+        // 🔄 Refresh user info
+        if (storedUser?.userId) {
+          const res = await fetch(`${API_BASE}/users/check-session`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "x-session-token": localStorage.getItem("sessionToken") || "",
+              "x-user-id": storedUser.userId,
+            },
+            credentials: "include",
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            fetchedName = data?.user?.name || fetchedName;
+            fetchedPhone = data?.user?.phone || fetchedPhone;
+
+            localStorage.setItem(
+              "authUser",
+              JSON.stringify({ ...storedUser, name: fetchedName, phone: fetchedPhone })
+            );
+          } else if (res.status === 401) {
+            navigate("/auth", { state: { redirectTo: location.pathname } });
+            return;
+          }
+        }
+
+        if (!fetchedName || !fetchedPhone) return;
+
+        // ❗ Check duplicate
+        const checkRes = await fetch(
+          `${API_BASE}/leads/check?userId=${storedUser?.userId}&listingId=${property?.listingId}`
+        );
+        const checkData = await checkRes.json();
+
+        if (checkData?.exists) {
+          showInfo("Already saved in cart");
+          setAddedToCart(true);
+          return;
+        }
+
+        // ✅ Save lead
+        await fetch(`${API_BASE}/leads/create`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: fetchedName,
+            phone: fetchedPhone,
+            listingId: property?.listingId,
+            userId: storedUser?.userId,
+            ownerId: property?.userId || property?.ownerId,
+          }),
+        });
+
+        showSuccess("Added to cart");
+        setAddedToCart(true);
+      } catch (err) {
+        console.error("Error adding to cart:", err);
+      }
+      }}
+    >
+      Add to Cart
+    </a>
+  </div>
+)}
 
 
 
