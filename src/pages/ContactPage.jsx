@@ -134,6 +134,7 @@ export default function ContactPage() {
   const [property, setProperty] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+   const [addedToCart, setAddedToCart] = useState(false);
 
   const { user, loading: authLoading } = useContext(AuthContext);
   const location = useLocation();
