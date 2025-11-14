@@ -352,6 +352,7 @@ export default function AuthPage() {
             onChange={(e) => handlePhoneChange(e.target.value)}
             required
             maxLength="10"
+            inputMode="numeric"
             pattern="\d{10}"
             title="Enter a valid 10-digit phone number"
           />
