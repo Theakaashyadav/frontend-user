@@ -298,11 +298,11 @@ export default function ContactPage() {
 
 
 
-    {/* Fixed Add to Cart / Added to Cart button above BottomNav */}
+  {/* Fixed Add to Cart / Added to Cart button above BottomNav */}
 <div
   style={{
     position: "fixed",
-    bottom: "60px",
+    bottom: "60px", // place above BottomNav
     left: 0,
     width: "100%",
     background: "#1B1D3A",
@@ -327,7 +327,6 @@ export default function ContactPage() {
         padding: "14px 0",
         zIndex: 1200,
         opacity: 0.8,
-        marginBottom: "30px",
         cursor: "not-allowed",
         border: "none",
       }}
@@ -347,7 +346,6 @@ export default function ContactPage() {
         borderRadius: "10px",
         padding: "14px 0",
         zIndex: 1200,
-        marginBottom: "30px",
         cursor: "pointer",
         border: "none",
       }}
@@ -357,6 +355,7 @@ export default function ContactPage() {
     </button>
   )}
 </div>
+
 
 
 
