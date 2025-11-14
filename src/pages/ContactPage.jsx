@@ -298,11 +298,11 @@ export default function ContactPage() {
 
 
 
-      {/* Fixed Add to Cart / Added to Cart button above BottomNav */}
+    {/* Fixed Add to Cart / Added to Cart button above BottomNav */}
 <div
   style={{
     position: "fixed",
-    bottom: 0, // stick to bottom
+    bottom: "60px",
     left: 0,
     width: "100%",
     background: "#1B1D3A",
@@ -312,8 +312,6 @@ export default function ContactPage() {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    padding: "0 10px", // small side padding for responsiveness
-    boxSizing: "border-box",
   }}
 >
   {addedToCart ? (
@@ -321,16 +319,17 @@ export default function ContactPage() {
       type="button"
       className="btn btn-dark"
       style={{
-        width: "90%",
-        maxWidth: "400px",
+        width: "50%",
         background: "#F2C94C",
-        color: "#000",
+        color: "#000000ff",
         textAlign: "center",
         borderRadius: "10px",
         padding: "14px 0",
-        cursor: "not-allowed", // indicate disabled
+        zIndex: 1200,
+        opacity: 0.8,
+        marginBottom: "30px",
+        cursor: "not-allowed",
         border: "none",
-        boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
       }}
       disabled
     >
@@ -341,16 +340,16 @@ export default function ContactPage() {
       type="button"
       className="btn btn-dark"
       style={{
-        width: "90%",
-        maxWidth: "400px",
-        background: "#707070",
-        color: "#fff",
+        width: "50%",
+        background: "#707070ff",
+        color: "#ffffff",
         textAlign: "center",
         borderRadius: "10px",
         padding: "14px 0",
+        zIndex: 1200,
+        marginBottom: "30px",
         cursor: "pointer",
         border: "none",
-        boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
       }}
       onClick={handleAddToCartClick}
     >
