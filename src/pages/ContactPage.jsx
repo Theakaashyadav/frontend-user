@@ -15,7 +15,7 @@ function ProductCard({ property, onImageClick, navigate, user }) {
   const images = property.imageUrls || property.images || [];
   const fallbackImage = "https://via.placeholder.com/400x250?text=No+Image";
   const sessionId = localStorage.getItem("sessionId");
-  const [addedToCart, setAddedToCart] = useState(false);
+
 
   const trackContactClick = async (sessionId, userId) => {
     try {
@@ -31,11 +31,7 @@ function ProductCard({ property, onImageClick, navigate, user }) {
 
 
 
-  const handleContactClick = () => {
-    if (!property || !property._id) return;
-    trackContactClick(sessionId, user?._id);
-    navigate(`/contact/${property.listingId}`);
-  };
+  
 
   return (
     <div className="listing" style={{ position: "relative" }} onClick={handleContactClick}>
