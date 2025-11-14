@@ -538,12 +538,18 @@ if (hasPending) {
         {/* ✅ Download QR Button */}
         <button
           onClick={() => {
-            const link = document.createElement("a");
-            link.href = qrCodeUrl;
-            link.download = `UPI_QR_${selectedPackage || "payment"}.png`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+    if (window.AndroidDownloader) {
+      // Android WebView
+      window.AndroidDownloader.downloadFile(qrCodeUrl);
+    } else {
+      // Browser
+      const link = document.createElement("a");
+      link.href = qrCodeUrl;
+      link.download = `UPI_QR_${selectedPackage || "payment"}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
           }}
           style={{
             marginTop: "1rem",
