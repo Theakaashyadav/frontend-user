@@ -90,7 +90,7 @@ export default function Navbar() {
   onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
   onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
 >
-  Greater Noida App
+  Gn App
 </Link>
 
   ) : (
