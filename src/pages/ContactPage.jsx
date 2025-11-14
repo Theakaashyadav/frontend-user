@@ -16,6 +16,11 @@ function ProductCard({ property, onImageClick, navigate, user }) {
   const fallbackImage = "https://via.placeholder.com/400x250?text=No+Image";
   const sessionId = localStorage.getItem("sessionId");
 
+   const handleContactClick = () => {
+    if (!property || !property._id) return;
+    trackContactClick(sessionId, user?._id);
+    navigate(`/contact/${property.listingId}`);
+  };
 
   const trackContactClick = async (sessionId, userId) => {
     try {
@@ -159,11 +164,6 @@ export default function ContactPage() {
         return;
       }
 
-const handleContactClick = () => {
-  navigate(`/contact/${property.listingId}`, {
-    state: { property },
-  });
-};
 
 
 
