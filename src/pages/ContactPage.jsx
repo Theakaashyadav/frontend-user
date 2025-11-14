@@ -11,6 +11,7 @@ import { GlobalToaster, showSuccess, showError, showInfo } from "../utils/toaste
 import { motion } from "framer-motion";
 import BottomNav from "../components/BottomNav";
 
+
 function ProductCard({ property, onImageClick, navigate, user }) {
   const images = property.imageUrls || property.images || [];
   const fallbackImage = "https://via.placeholder.com/400x250?text=No+Image";
@@ -243,17 +244,26 @@ export default function ContactPage() {
         return;
       }
 
-      await fetch(`${API_BASE}/leads/create`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: fetchedName,
-          phone: fetchedPhone,
-          listingId: property?.listingId,
-          userId: storedUser?.userId,
-          ownerId: property?.userId || property?.ownerId,
-        }),
-      });
+     const requestBody = {
+  name: fetchedName,
+  phone: fetchedPhone,
+  listingId: property?.listingId,
+  userId: storedUser?.userId,
+  ownerId: property?.userId || property?.ownerId,
+};
+
+
+
+// 👉 Toaster popup
+showInfo(
+  "Sending Lead:\n" + JSON.stringify(requestBody, null, 2)
+);
+
+await fetch(`${API_BASE}/leads/create`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(requestBody),
+});
 
       showSuccess("Added to cart");
       setAddedToCart(true);
