@@ -329,6 +329,7 @@ export default function ContactPage() {
         opacity: 0.8,
         cursor: "not-allowed",
         border: "none",
+        marginBottom: "30px",
       }}
       disabled
     >
@@ -348,6 +349,7 @@ export default function ContactPage() {
         zIndex: 1200,
         cursor: "pointer",
         border: "none",
+        marginBottom: "30px",
       }}
       onClick={handleAddToCartClick}
     >
