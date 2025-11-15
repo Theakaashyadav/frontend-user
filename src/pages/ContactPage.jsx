@@ -198,80 +198,79 @@ export default function ContactPage() {
 
   if (authLoading || isLoading || !showPage) return <SkeletonLoader count={4} page="contact" />;
 
-  // ✅ Add to Cart click handler directly inside the component
-  const handleAddToCartClick = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+// ✅ Add to Cart click handler directly inside the component
+const handleAddToCartClick = async (e) => {
+  e.preventDefault();
+  e.stopPropagation();
 
+  try {
+    const storedUser = JSON.parse(localStorage.getItem("authUser"));
+    let fetchedName = storedUser?.name || "";
+    let fetchedPhone = storedUser?.phone || "";
 
-    try {
-      const storedUser = JSON.parse(localStorage.getItem("authUser"));
-      let fetchedName = storedUser?.name || "";
-      let fetchedPhone = storedUser?.phone || "";
+    if (storedUser?.userId) {
+      const res = await fetch(`${API_BASE}/users/check-session`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "x-session-token": localStorage.getItem("sessionToken") || "",
+          "x-user-id": storedUser.userId,
+        },
+        credentials: "include",
+      });
 
-      if (storedUser?.userId) {
-        const res = await fetch(`${API_BASE}/users/check-session`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "x-session-token": localStorage.getItem("sessionToken") || "",
-            "x-user-id": storedUser.userId,
-          },
-          credentials: "include",
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          fetchedName = data?.user?.name || fetchedName;
-          fetchedPhone = data?.user?.phone || fetchedPhone;
-          localStorage.setItem(
-            "authUser",
-            JSON.stringify({ ...storedUser, name: fetchedName, phone: fetchedPhone })
-          );
-        } else if (res.status === 401) {
-          navigate("/auth", { state: { redirectTo: location.pathname } });
-          return;
-        }
-      }
-
-      const checkRes = await fetch(
-        `${API_BASE}/leads/check?userId=${storedUser?.userId}&listingId=${property?.listingId}`
-      );
-      const checkData = await checkRes.json();
-      if (checkData?.exists) {
-        showInfo("Already saved in cart");
-        setAddedToCart(true);
+      if (res.ok) {
+        const data = await res.json();
+        fetchedName = data?.user?.name || fetchedName;
+        fetchedPhone = data?.user?.phone || fetchedPhone;
+        localStorage.setItem(
+          "authUser",
+          JSON.stringify({
+            ...storedUser,
+            name: fetchedName,
+            phone: fetchedPhone,
+          })
+        );
+      } else if (res.status === 401) {
+        navigate("/auth", { state: { redirectTo: location.pathname } });
         return;
       }
-
-     const requestBody = {
-  name: fetchedName,
-  phone: fetchedPhone,
-  listingId: property?.listingId,
-  userId: storedUser?.userId,
-  ownerId: property?.userId || property?.ownerId,
-};
-
-
-
-// 👉 Toaster popup
-showInfo(
-  "Sending Lead:\n" + JSON.stringify(requestBody, null, 2)
-);
-
-await fetch(`${API_BASE}/leads/create`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(requestBody),
-});
-
-      showSuccess("Added to cart");
-      setAddedToCart(true);
-    } catch (err) {
-      console.error("Error adding to cart:", err);
     }
-  };
 
+    const checkRes = await fetch(
+      `${API_BASE}/leads/check?userId=${storedUser?.userId}&listingId=${property?.listingId}`
+    );
+    const checkData = await checkRes.json();
+    if (checkData?.exists) {
+      showInfo("Already saved in cart");
+      setAddedToCart(true);
+      return;
+    }
+
+    await fetch(`${API_BASE}/leads/create`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: fetchedName,
+        phone: fetchedPhone,
+        listingId: property?.listingId,
+        userId: storedUser?.userId,
+
+        // ✅ UPDATED ownerId fallback (ONLY required change)
+        ownerId:
+          property?.userId ||
+          property?.ownerId ||
+          property?.propertyUserId ||
+          property?.userIdOfProperty,
+      }),
+    });
+
+    showSuccess("Added to cart");
+    setAddedToCart(true);
+  } catch (err) {
+    console.error("Error adding to cart:", err);
+  }
+};
   return (
     <div className="contact-page container contact-container">
       <BottomNav ref={cartRef} />
