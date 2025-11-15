@@ -31,7 +31,7 @@
   margin: 0;
   padding: clamp(10px, 2vw, 20px);
   box-sizing: border-box;
-  bottom: "120px",
+  padding-bottom: 160px;
 }
 
 /* Page Title */
