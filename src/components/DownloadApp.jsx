@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { FaDownload, FaCheckCircle, FaStar } from "react-icons/fa";
+import Home from "../images/Home.jpg";
+import Udash from "../images/Udash.jpg";
+import Uorder from "../images/Uorder.png";
 
 export default function DownloadPropertyApp({ setProfileOpen }) {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -182,23 +185,31 @@ export default function DownloadPropertyApp({ setProfileOpen }) {
         </p>
       </section>
 
-      {/* Screenshots Section */}
-      <section style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "25px" }}>
-        {["Home+Listings", "Property+Details", "Contact+Seller"].map((text, idx) => (
-          <img
-            key={idx}
-            src={`https://via.placeholder.com/200x400?text=${text}`}
-            alt={text}
-            style={{
-              borderRadius: "16px",
-              boxShadow: "0 8px 25px rgba(0,0,0,0.15)",
-              transition: "transform 0.3s ease",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
-          />
-        ))}
-      </section>
+{/* Screenshots Section */}
+<section
+  style={{
+    display: "flex",
+    justifyContent: "center",
+    flexWrap: "wrap",
+    gap: "25px",
+  }}
+>
+  {[Home, Udash, Uorder].map((imgSrc, idx) => (
+    <img
+      key={idx}
+      src={imgSrc}
+      alt={`Screenshot ${idx + 1}`}
+      style={{
+        borderRadius: "16px",
+        boxShadow: "0 8px 25px rgba(0,0,0,0.15)",
+        transition: "transform 0.3s ease",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+      onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+    />
+  ))}
+</section>
+
 
       <style>{`
         .loader {
