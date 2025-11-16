@@ -45,8 +45,9 @@ const [selectedPackage, setSelectedPackage] = useState(null);
   // Auto-generate QR when package or amount changes
 useEffect(() => {
   if (selectedPackage) {
-    const selectedPkg = packages.find((pkg) => pkg.amount === selectedPackage);
-    const amount = selectedPkg ? selectedPkg.price : 0;
+    const selectedPkgObj = packages.find((pkg) => pkg.amount === Number(credits));
+const amount = selectedPkgObj ? selectedPkgObj.price : 0;
+
     const upiUrl = `upi://pay?pa=theakaashyadav@ptyes&pn=Akash%20Yadav&am=${amount}&cu=INR&tn=Credit%20Purchase`;
 
     QRCode.toDataURL(upiUrl)
@@ -57,19 +58,15 @@ useEffect(() => {
   }
 }, [selectedPackage]);
 
-  // Function to map package → QR image
 const getQrImage = (pkg) => {
   switch (pkg) {
-    case "249":
-      return qr249;
-    case "499":
-      return qr499;
-    case "999":
-      return qr999;
-    default:
-      return null;
+    case 250: return qr249;
+    case 600: return qr499;
+    case 1250: return qr999;
+    default: return null;
   }
 };
+
 
   const fetchRequests = async (uid) => {
     if (!uid) return;
