@@ -16,10 +16,25 @@ export default function Navbar() {
   const { logout } = useContext(AuthContext);
   const postRef = useRef(null);
   const dropdownRef = useRef(null);
+  const [isBrowser, setIsBrowser] = useState(false); // ✅ declare state
+
 
   const onHome = location?.pathname === "/";
   const onAuth = location?.pathname.toLowerCase() === "/auth";
 
+
+  // Detect if user is on browser (not inside Android/iOS app)
+  useEffect(() => {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+    // If your Android app has a unique string in userAgent, replace "MyApp" with that
+    const isAndroidApp = userAgent.includes("Gn_App"); 
+    const isiOSApp = false; // update if needed
+
+    if (!isAndroidApp && !isiOSApp) {
+      setIsBrowser(true);
+    }
+  }, []);
   // Tooltip show-once per session
   useEffect(() => {
     if (onHome) {
@@ -182,9 +197,11 @@ export default function Navbar() {
               <Link to="/buy-credits" onClick={() => setProfileOpen(false)}>
                 Buy Credits
               </Link>
+              {isBrowser && (
               <Link to="/DownloadApp" onClick={() => setProfileOpen(false)}>
                 Download App
               </Link>
+            )}
 
               <Link to="/ContactUs" onClick={() => setProfileOpen(false)}>
                 Contact Us
