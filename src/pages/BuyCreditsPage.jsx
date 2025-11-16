@@ -42,11 +42,10 @@ const [selectedPackage, setSelectedPackage] = useState(null);
 }, []);
 
 
-  // Auto-generate QR when package or amount changes
 useEffect(() => {
-  if (selectedPackage) {
-    const selectedPkgObj = packages.find((pkg) => pkg.amount === Number(credits));
-const amount = selectedPkgObj ? selectedPkgObj.price : 0;
+  if (selectedPackage !== null) {
+    const selectedPkgObj = packages.find((pkg) => pkg.amount === Number(selectedPackage));
+    const amount = selectedPkgObj ? selectedPkgObj.price : 0;
 
     const upiUrl = `upi://pay?pa=theakaashyadav@ptyes&pn=Akash%20Yadav&am=${amount}&cu=INR&tn=Credit%20Purchase`;
 
@@ -57,6 +56,7 @@ const amount = selectedPkgObj ? selectedPkgObj.price : 0;
     setQrCodeUrl("");
   }
 }, [selectedPackage]);
+
 
 const getQrImage = (pkg) => {
   switch (pkg) {
@@ -84,6 +84,7 @@ const getQrImage = (pkg) => {
     { amount: 600, price: 499, bonus: 20, recommended: true },
     { amount: 1250, price: 999, bonus: 50 },
   ];
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -439,8 +440,8 @@ if (hasPending) {
   }}
   style={{
     ...styles.selectButton,
-    background:
-      selectedPackage === pkg.amount ? "#1b1d3a" : "#2563eb", // color change when selected
+    background: Number(selectedPackage) === Number(pkg.amount) ? "#1b1d3a" : "#2563eb",
+ // color change when selected
     color: "#fff",
     transition: "all 0.3s ease",
   }}
@@ -736,6 +737,7 @@ if (hasPending) {
                     onMouseOut={(e) => {
                       e.currentTarget.style.transform = "scale(1)";
                       e.currentTarget.style.boxShadow = "none";
+
                     }}
                   />
                 </a>
