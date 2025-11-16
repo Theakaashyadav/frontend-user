@@ -94,12 +94,12 @@ export default function DownloadPropertyApp({ setProfileOpen }) {
             Explore apartments, houses, and lands near you. Browse photos, prices, and contact
             sellers instantly. Download our app for the ultimate property search experience.
           </p>
-          <button
+         <button
   onClick={handleInstallClick}
   disabled={loading}
   style={{
     marginTop: "30px",
-    padding: "14px 28px", // reduced padding for smaller width
+    padding: "14px 28px",
     fontSize: "clamp(16px, 2vw, 18px)",
     fontWeight: "600",
     color: palette.primary,
@@ -111,26 +111,26 @@ export default function DownloadPropertyApp({ setProfileOpen }) {
     transition: "all 0.3s ease",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center", // center text and icon
+    justifyContent: "center",
     gap: "10px",
-    marginLeft: "auto", // center horizontally
-    marginRight: "auto", // center horizontally
+    marginLeft: "auto",
+    marginRight: "auto",
   }}
   onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-3px) scale(1.05)")}
   onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0) scale(1)")}
-/>
+>
+  {loading ? (
+    <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+      Downloading...
+      <span className="loader" />
+    </span>
+  ) : (
+    <>
+      <FaDownload /> Download App
+    </>
+  )}
+</button>
 
-            {loading ? (
-              <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                Downloading...
-                <span className="loader" />
-              </span>
-            ) : (
-              <>
-                <FaDownload /> Download App
-              </>
-            )}
-          </button>
         </section>
 
         {/* Features Section */}
