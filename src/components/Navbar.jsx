@@ -23,19 +23,30 @@ export default function Navbar() {
   const onAuth = location?.pathname.toLowerCase() === "/auth";
 
 
- useEffect(() => {
+useEffect(() => {
   const ua = navigator.userAgent || "";
+
+  // ✅ Detect Android WebView (with custom UA)
+  const isAndroidApp = ua.includes("Gn_App");
+
+  // ✅ Detect generic Android WebView (optional fallback)
   const isAndroidWebView =
     /wv|Android.*AppleWebKit/.test(ua) && !/Chrome\/[.0-9]* Mobile/.test(ua);
 
+  // ✅ Detect iOS WebView
   const isIosWebView =
-    /iPhone|iPad|iPod/.test(ua) &&
-    !/Safari/.test(ua);
+    /iPhone|iPad|iPod/.test(ua) && !/Safari/.test(ua);
 
-  if (!isAndroidWebView && !isIosWebView) {
+  // ✅ Set browser flag
+  if (!isAndroidApp && !isAndroidWebView && !isIosWebView) {
     setIsBrowser(true);
+  } else {
+    setIsBrowser(false);
   }
+
+
 }, []);
+
 
   // Tooltip show-once per session
   useEffect(() => {
