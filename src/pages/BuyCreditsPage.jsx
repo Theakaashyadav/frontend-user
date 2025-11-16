@@ -555,29 +555,46 @@ if (hasPending) {
 
         {/* 🔥 Download Button (Auto-download image file) */}
         <button
-          onClick={() => {
-            const qrImg = getQrImage(selectedPackage);
-            const filename = `UPI_QR_${selectedPackage}.png`;
+         onClick={() => {
+  const qrImg = getQrImage(selectedPackage);
 
-            if (!qrImg) return;
+  if (!qrImg) return;
 
-            // Android Native Downloader
-            if (window?.AndroidDownloader?.downloadFile) {
-              try {
-                window.AndroidDownloader.downloadFile(qrImg);
-              } catch (err) {
-                console.error("Android download failed:", err);
-              }
-            } else {
-              // Browser Download
-              const link = document.createElement("a");
-              link.href = qrImg;
-              link.download = filename;
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-            }
-          }}
+  // Convert to JPG before download
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+  img.src = qrImg;
+
+  img.onload = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#fff";        // JPEG needs background (no transparency)
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0);
+
+    const jpgUrl = canvas.toDataURL("image/jpeg", 0.95);
+    const filename = `UPI_QR_${selectedPackage}.jpg`;
+
+    // Android Native Downloader
+    if (window?.AndroidDownloader?.downloadFile) {
+      try {
+        window.AndroidDownloader.downloadFile(jpgUrl);
+      } catch (err) {
+        console.error("Android download failed:", err);
+      }
+    } else {
+      // Browser Download
+      const link = document.createElement("a");
+      link.href = jpgUrl;
+      link.download = filename;
+      link.click();
+    }
+  };
+}}
+
           style={{
             marginTop: "1rem",
             background: "#1b1d3a",
