@@ -1,10 +1,10 @@
 let API_BASE = "";
 
-// Local frontend talking to EC2 backend
+// Local frontend
 if (window.location.hostname.includes("localhost")) {
   API_BASE = "http://52.66.236.122:4000/api";
 } else {
-  // Production frontend on Render talking to EC2 backend
+  // Production frontend on Render
   API_BASE = "http://52.66.236.122:4000/api";
 }
 
