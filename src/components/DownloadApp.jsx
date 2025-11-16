@@ -95,27 +95,31 @@ export default function DownloadPropertyApp({ setProfileOpen }) {
             sellers instantly. Download our app for the ultimate property search experience.
           </p>
           <button
-            onClick={handleInstallClick}
-            disabled={loading}
-            style={{
-              marginTop: "30px",
-              padding: "16px 40px",
-              fontSize: "clamp(16px, 2vw, 18px)",
-              fontWeight: "600",
-              color: palette.primary,
-              background: palette.accent,
-              border: "none",
-              borderRadius: "12px",
-              boxShadow: "0 8px 25px rgba(0,0,0,0.25)",
-              cursor: "pointer",
-              transition: "all 0.3s ease",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "10px",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-3px) scale(1.05)")}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0) scale(1)")}
-          >
+  onClick={handleInstallClick}
+  disabled={loading}
+  style={{
+    marginTop: "30px",
+    padding: "14px 28px", // reduced padding for smaller width
+    fontSize: "clamp(16px, 2vw, 18px)",
+    fontWeight: "600",
+    color: palette.primary,
+    background: palette.accent,
+    border: "none",
+    borderRadius: "12px",
+    boxShadow: "0 8px 25px rgba(0,0,0,0.25)",
+    cursor: "pointer",
+    transition: "all 0.3s ease",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center", // center text and icon
+    gap: "10px",
+    marginLeft: "auto", // center horizontally
+    marginRight: "auto", // center horizontally
+  }}
+  onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-3px) scale(1.05)")}
+  onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0) scale(1)")}
+/>
+
             {loading ? (
               <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                 Downloading...
@@ -249,18 +253,24 @@ export default function DownloadPropertyApp({ setProfileOpen }) {
           }
         }
 
-        @media (max-width: 480px) {
-          h1 {
-            font-size: 28px !important;
-          }
-          h2 {
-            font-size: 22px !important;
-          }
-          .loader {
-            width: 14px !important;
-            height: 14px !important;
-          }
-        }
+      @media (max-width: 480px) {
+  h1 {
+    font-size: 28px !important;
+  }
+  h2 {
+    font-size: 22px !important;
+  }
+  .loader {
+    width: 14px !important;
+    height: 14px !important;
+  }
+  button {
+    width: 80%; /* smaller width on mobile */
+    max-width: 250px; /* limit maximum */
+    padding: 12px 20px;
+  }
+}
+
       `}</style>
     </div>
   );
