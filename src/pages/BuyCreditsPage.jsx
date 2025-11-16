@@ -57,6 +57,20 @@ useEffect(() => {
   }
 }, [selectedPackage]);
 
+  // Function to map package → QR image
+const getQrImage = (pkg) => {
+  switch (pkg) {
+    case "249":
+      return qr249;
+    case "499":
+      return qr499;
+    case "999":
+      return qr999;
+    default:
+      return null;
+  }
+};
+
   const fetchRequests = async (uid) => {
     if (!uid) return;
     try {
@@ -478,44 +492,44 @@ if (hasPending) {
   </label>
 
   <div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    gap: "0.75rem",
+    background: "#f9fafb",
+    border: "1px solid #d1d5db",
+    borderRadius: "0.75rem",
+    padding: "0.75rem 1rem",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
+  }}
+  onClick={() => setPaymentMethod("upi_qr")}
+>
+  <input
+    type="radio"
+    name="paymentMethod"
+    value="upi_qr"
+    checked={paymentMethod === "upi_qr"}
+    onChange={(e) => setPaymentMethod(e.target.value)}
     style={{
-      display: "flex",
-      alignItems: "center",
-      gap: "0.75rem",
-      background: "#f9fafb",
-      border: "1px solid #d1d5db",
-      borderRadius: "0.75rem",
-      padding: "0.75rem 1rem",
+      width: "18px",
+      height: "18px",
       cursor: "pointer",
-      transition: "all 0.2s ease",
+      accentColor: "#1b1d3a",
     }}
-    onClick={() => setPaymentMethod("upi_qr")}
+  />
+  <span
+    style={{
+      fontSize: "1rem",
+      color: "#1b1d3a",
+      fontWeight: "500",
+    }}
   >
-    <input
-      type="radio"
-      name="paymentMethod"
-      value="upi_qr"
-      checked={paymentMethod === "upi_qr"}
-      onChange={(e) => setPaymentMethod(e.target.value)}
-      style={{
-        width: "18px",
-        height: "18px",
-        cursor: "pointer",
-        accentColor: "#1b1d3a",
-      }}
-    />
-    <span
-      style={{
-        fontSize: "1rem",
-        color: "#1b1d3a",
-        fontWeight: "500",
-      }}
-    >
-      UPI QR Code
-    </span>
-  </div>
+    UPI QR Code
+  </span>
+</div>
 
- {/* ✅ Responsive QR image */}
+{/* QR Code Box */}
 {paymentMethod === "upi_qr" && (
   <div
     style={{
@@ -525,10 +539,11 @@ if (hasPending) {
       padding: "1rem",
     }}
   >
-    {qrCodeUrl ? (
+    {/* ⭐ Instead of base64 QR, we load from images */}
+    {selectedPackage ? (
       <>
         <img
-          src={qrCodeUrl}
+          src={getQrImage(selectedPackage)}
           alt="UPI QR Code"
           style={{
             width: "100%",
@@ -540,32 +555,31 @@ if (hasPending) {
           }}
         />
 
-        {/* ✅ Download QR Button */}
+        {/* 🔥 Download Button (Auto-download image file) */}
         <button
-       onClick={() => {
-  if (window?.AndroidDownloader?.downloadFile) {
-    // Android WebView: Use native downloader
-    try {
-      window.AndroidDownloader.downloadFile(qrCodeUrl);
-    } catch (err) {
-      console.error("Android download failed:", err);
-    }
-  } else if (qrCodeUrl) {
-    // Browser fallback: create a temporary link to download
-    const filename = `UPI_QR_${selectedPackage || "payment"}.png`;
-    const link = document.createElement("a");
-    link.href = qrCodeUrl;
-    link.download = filename;
-    // Append, click, and remove the link
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  } else {
-    console.error("QR code URL is not defined");
-  }
-}}
+          onClick={() => {
+            const qrImg = getQrImage(selectedPackage);
+            const filename = `UPI_QR_${selectedPackage}.png`;
 
+            if (!qrImg) return;
 
+            // Android Native Downloader
+            if (window?.AndroidDownloader?.downloadFile) {
+              try {
+                window.AndroidDownloader.downloadFile(qrImg);
+              } catch (err) {
+                console.error("Android download failed:", err);
+              }
+            } else {
+              // Browser Download
+              const link = document.createElement("a");
+              link.href = qrImg;
+              link.download = filename;
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            }
+          }}
           style={{
             marginTop: "1rem",
             background: "#1b1d3a",
@@ -587,7 +601,7 @@ if (hasPending) {
         </button>
       </>
     ) : (
-      <p style={{ color: "#6b7280" }}>Select a package to generate QR</p>
+      <p style={{ color: "#6b7280" }}>Select a package to show QR</p>
     )}
 
     <p
@@ -604,8 +618,6 @@ if (hasPending) {
   </div>
 )}
 
-
-</div>
 
 
         {/* UPI Apps */}
