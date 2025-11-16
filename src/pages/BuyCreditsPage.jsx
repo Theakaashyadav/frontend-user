@@ -616,6 +616,8 @@ if (hasPending) {
   </div>
 )}
 
+  </div>
+
 
 
         {/* UPI Apps */}
