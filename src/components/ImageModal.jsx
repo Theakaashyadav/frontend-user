@@ -128,20 +128,27 @@ export default function ImageModal({
         }
 
         .close-btn {
-          position: absolute;
-          top: 5px;
-          right: 5px;
-          font-size: 2rem;
-          color: white;
-          cursor: pointer;
-          background: rgba(0, 0, 0, 0.4);
-          border-radius: 50%;
-          width: 40px;
-          height: 40px;
-          text-align: center;
-          line-height: 40px;
-          transition: background 0.3s;
-        }
+  position: absolute;
+  top: 5px;
+  right: 5px;
+
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.4);
+
+  color: white;
+  font-size: 1.8rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  cursor: pointer;
+
+  transition: background 0.3s;
+}
+
         .close-btn:hover {
           background: rgba(0, 0, 0, 0.7);
         }
@@ -163,10 +170,13 @@ export default function ImageModal({
         .next { right: 10px; }
 
         @media (max-width: 768px) {
-          .modal-image-wrapper {
-            width: 90%;
-            aspect-ratio: 1 / 1;
-          }
+  .close-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1.5rem;
+  }
+}
+
           .prev, .next { display: none !important; }
           .skeleton-icon {
             width: 40px;
