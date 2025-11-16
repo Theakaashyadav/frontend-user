@@ -1,11 +1,11 @@
 let API_BASE = "";
 
-// Local frontend
+// Local frontend (localhost)
 if (window.location.hostname.includes("localhost")) {
-  API_BASE = "https://52.66.236.122:4000/api";
+  API_BASE = "https://akash-1-4g8j.onrender.com/api";
 } else {
-  // Production frontend on Render
-  API_BASE = "https://52.66.236.122:4000/api";
+  // Production frontend (Render)
+  API_BASE = "https://akash-1-4g8j.onrender.com/api";
 }
 
 export { API_BASE };
