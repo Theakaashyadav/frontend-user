@@ -151,7 +151,8 @@ export default function AuthPage() {
         return;
       }
 
-
+// ✅ Save phone to remember for next login
+localStorage.setItem("userPhone", phone);
 
 
       // ✅ If active user, proceed with normal login
