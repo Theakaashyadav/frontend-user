@@ -22,7 +22,7 @@ export default function DownloadPropertyApp({ setProfileOpen }) {
       setLoading(true);
       const link = document.createElement("a");
       link.href =
-        "https://github.com/Theakaashyadav/mapp/blob/main/Gn%20App.apk?raw=true";
+        "https://github.com/Theakaashyadav/mapp/blob/main/GnApp.apk?raw=true";
       link.download = "PropertyApp.apk";
       document.body.appendChild(link);
       link.click();
