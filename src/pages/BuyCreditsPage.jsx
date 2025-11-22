@@ -983,7 +983,7 @@ Please verify my details.
 
 Thank you.`;
 
-            const whatsappUrl = `https://wa.me/9115082252?text=${encodeURIComponent(
+            const whatsappUrl = `https://wa.me/9149210313?text=${encodeURIComponent(
               message
             )}`;
 
@@ -1166,7 +1166,7 @@ Thank you.`;
     { 
       title: "24/7 Support", 
       icon: "💬", 
-      onClick: () => window.open("https://wa.me/919012622994", "_blank") 
+      onClick: () => window.open("https://wa.me/919149210313", "_blank") 
     },
   ].map((feature, idx) => (
     <div
