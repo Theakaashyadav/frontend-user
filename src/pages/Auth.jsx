@@ -678,8 +678,8 @@ localStorage.setItem("userPhone", phone);
             <p style={{ margin: "10px 0" }}>
               Please call our support team to reset your Pin.
             </p>
-            <p style={{ fontWeight: "bold", fontSize: "16px" }}>📞 +91-98115082252</p>
-            <a href="tel:+9198115082252" style={{ textDecoration: "none" }}>
+            <p style={{ fontWeight: "bold", fontSize: "16px" }}>📞 +91-9149210313</p>
+            <a href="tel:+919149210313" style={{ textDecoration: "none" }}>
               <button style={styles.button}>Call Now</button>
             </a>
             <button
