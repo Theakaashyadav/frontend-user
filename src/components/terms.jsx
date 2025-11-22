@@ -207,7 +207,7 @@ export default function TermsAndConditions() {
           <p>
             For queries, legal notices, or complaints, contact us at{" "}
             <a
-              href="mailto:support@propertylistings.com"
+              href="mailto:theakaashyadav@gmail.com"
               className="text-blue-500 underline hover:text-blue-700"
             >
               support@propertylistings.com
