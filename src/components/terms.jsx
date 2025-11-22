@@ -210,7 +210,7 @@ export default function TermsAndConditions() {
               href="mailto:theakaashyadav@gmail.com"
               className="text-blue-500 underline hover:text-blue-700"
             >
-              support@propertylistings.com
+              theakaashyadav@gmail.com
             </a>
             . We will make reasonable efforts to respond promptly.
           </p>
