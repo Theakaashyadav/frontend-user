@@ -290,10 +290,10 @@ export default function SupportContactPage() {
         <>
           For urgent issues:&nbsp;
           <a
-            href="tel:+919012622994"
+            href="tel:+919149210313"
             style={{ color: "#4f46e5", textDecoration: "none" }}
           >
-            +91 9012622994
+            +91 9149210313
           </a>
         </>
       ),
