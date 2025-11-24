@@ -155,30 +155,25 @@ export default function MyProperties() {
     setImageLoading(true);
   };
 
-  // ✅ Track analytics events with session creation if missing
-  const trackEvent = async (eventType) => {
-    try {
-      let sessionId = localStorage.getItem("sessionId");
-
-      if (!sessionId) {
-        const res = await fetch(`${API_BASE}/analytics/track`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-        });
-        const data = await res.json();
-        sessionId = data.sessionId;
-        localStorage.setItem("sessionId", sessionId);
-      }
-
-      await fetch(`${API_BASE}/analytics/event`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ eventType, sessionId }),
-      });
-    } catch (err) {
-      console.error("Failed to track event:", eventType, err);
-    }
-  };
+  async function trackEvent(eventType) {
+     try {
+       const res = await fetch(`${API_BASE}/analytics/event`, {
+         method: "POST",
+         headers: { "Content-Type": "application/json" },
+         body: JSON.stringify({ eventType }),
+       });
+   
+       if (!res.ok) {
+         const data = await res.json();
+         console.error(`Tracking ${eventType} failed`, data);
+       }
+     } catch (err) {
+       console.error(`trackEvent(${eventType}) error:`, err);
+     }
+   }
+   
+   // Convenience wrappersq
+  const trackdeleteprop = () => trackEvent("deleteprop");
 
 
 
@@ -210,7 +205,7 @@ export default function MyProperties() {
       });
       if (res.ok) {
         setList((prev) => prev.filter((p) => p._id !== id));
-        trackEvent("delete_property");
+        trackdeleteprop();
       } else alert("Delete failed");
     } catch (err) {
       console.error(err);
