@@ -24,6 +24,32 @@ export default function AuthPage() {
   const [showOtpForm, setShowOtpForm] = useState(false);
 
 
+  /* ==============================
+   🔹 Auth Analytics Tracking
+============================== */
+async function trackEvent(eventType) {
+  try {
+    const res = await fetch(`${API_BASE}/analytics/event`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ eventType }),
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      console.error(`Tracking ${eventType} failed`, data);
+    }
+  } catch (err) {
+    console.error(`trackEvent(${eventType}) error:`, err);
+  }
+}
+
+// Convenience wrappers
+const trackLogin = () =>trackEvent("login");
+const trackRegister = () => trackEvent("register");
+
+
+
 
 
   useEffect(() => {
@@ -157,6 +183,7 @@ localStorage.setItem("userPhone", phone);
 
       // ✅ If active user, proceed with normal login
       if (data.status === "active" || !data.status) {
+        trackLogin();
         const userData = {
           userId: data.userId,
           sessionToken: data.sessionToken,
@@ -270,6 +297,7 @@ localStorage.setItem("userPhone", phone);
       const data = await res.json();
       if (res.ok) {
         showSuccess(data.message || "Registration successful!");
+        trackRegister();
         setIsLogin(true);
         setPin(["", "", "", ""]);
         setVerifyPin(["", "", "", ""]);
