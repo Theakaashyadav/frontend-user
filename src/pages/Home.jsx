@@ -11,21 +11,18 @@ import SkeletonLoader from "../components/SkeletonLoader";
 
 
 /* ==============================
-   🔹 Analytics Utility
+   🔹 Analytics Utility (Simplified)
 ============================== */
-async function trackEvent(eventType, sessionId, userId, extraData = {}) {
+async function trackEvent(eventType) {
   try {
     const res = await fetch(`${API_BASE}/analytics/event`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ eventType, sessionId, userId, ...extraData }),
+      body: JSON.stringify({ eventType }),
     });
 
-    const data = await res.json();
-
-    if (eventType === "page_view" && res.ok && data?.sessionId) {
-      localStorage.setItem("sessionId", data.sessionId);
-    } else if (!res.ok) {
+    if (!res.ok) {
+      const data = await res.json();
       console.error(`Tracking ${eventType} failed`, data);
     }
   } catch (err) {
@@ -33,13 +30,11 @@ async function trackEvent(eventType, sessionId, userId, extraData = {}) {
   }
 }
 
-// Convenience wrappers
-const trackView = (sessionId, userId) =>
-  trackEvent("page_view", sessionId, userId);
-const trackImageClick = (sessionId, userId) =>
-  trackEvent("image_click", sessionId, userId);
-const trackContactClick = (sessionId, userId) =>
-  trackEvent("contact_click", sessionId, userId);
+// Convenience wrappersq
+export const trackpageViews = () => trackEvent("pageViews");
+export const trackImageClick = () => trackEvent("image");
+export const trackhandleContactClick = () => trackEvent("details");
+
 
 /* ==============================
    🔹 ProductCard Component
@@ -51,7 +46,7 @@ function ProductCard({ property, onDelete, onImageClick, navigate, user }) {
 
   const handleContactClick = () => {
     if (!property || !property._id) return;
-    trackContactClick(sessionId, user?._id); // ✅ track
+    trackhandleContactClick(); // ✅ track
     navigate(`/contact/${property.listingId}`);
   };
 
@@ -66,7 +61,7 @@ function ProductCard({ property, onDelete, onImageClick, navigate, user }) {
         alt={property.location || "Property"}
         onClick={() => {
           if (images.length) {
-            trackImageClick(sessionId, user?._id); // ✅ track
+            trackImageClick(); // ✅ track
             onImageClick(images);
           }
         }}
@@ -194,7 +189,7 @@ export default function Home() {
   // Track page view on load / user change
   useEffect(() => {
     const sessionId = localStorage.getItem("sessionId");
-    trackView(sessionId, user?._id);
+    trackpageViews(sessionId, user?._id);
     fetchList(); // ✅ add this line
   }, [user]);
 
