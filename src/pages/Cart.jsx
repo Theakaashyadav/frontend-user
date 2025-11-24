@@ -225,6 +225,31 @@ export default function Cart() {
   // 🧩 Add this new state and useEffect
   const [userCredits, setUserCredits] = useState(0);
 
+
+  /* ==============================
+     🔹 Auth Analytics Tracking
+  ============================== */
+  async function trackEvent(eventType) {
+    try {
+      const res = await fetch(`${API_BASE}/analytics/event`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ eventType }),
+      });
+  
+      if (!res.ok) {
+        const data = await res.json();
+        console.error(`Tracking ${eventType} failed`, data);
+      }
+    } catch (err) {
+      console.error(`trackEvent(${eventType}) error:`, err);
+    }
+  }
+  
+  // Convenience wrappers
+  const trackcheckout = () =>trackEvent("checkout");
+
+
   useEffect(() => {
     if (user?.userId) {
       (async () => {
@@ -283,6 +308,7 @@ export default function Cart() {
       const data = await res.json();
       if (data.success) {
         showSuccess("Order Processed successfully!");
+        trackcheckout();
         setSelectedListings([]); // clear selected items
       } else {
         showError(" Failed to save checkout");
