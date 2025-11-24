@@ -48,31 +48,26 @@ export default function Admin() {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // ✅ Track analytics events with session creation if missing
-  const trackEvent = async (eventType) => {
-    try {
-      let sessionId = localStorage.getItem("sessionId");
+ async function trackEvent(eventType) {
+   try {
+     const res = await fetch(`${API_BASE}/analytics/event`, {
+       method: "POST",
+       headers: { "Content-Type": "application/json" },
+       body: JSON.stringify({ eventType }),
+     });
+ 
+     if (!res.ok) {
+       const data = await res.json();
+       console.error(`Tracking ${eventType} failed`, data);
+     }
+   } catch (err) {
+     console.error(`trackEvent(${eventType}) error:`, err);
+   }
+ }
+ 
+ // Convenience wrappers
+ const tracksaveProp = () =>trackEvent("saveProp");
 
-      // If no session exists, create one
-      if (!sessionId) {
-        const res = await fetch(`${API_BASE}/analytics/track`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-        });
-        const data = await res.json();
-        sessionId = data.sessionId;
-        localStorage.setItem("sessionId", sessionId);
-      }
-
-      await fetch(`${API_BASE}/analytics/event`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ eventType, sessionId }),
-      });
-    } catch (err) {
-      console.error("Failed to track event:", eventType, err);
-    }
-  };
 
   const [cropModal, setCropModal] = useState({
     open: false,
@@ -184,7 +179,7 @@ export default function Admin() {
       await fetchList(); // Refresh list
 
       // ✅ Track save property event
-      trackEvent("save_property");
+      tracksaveProp();
 
       // 🚀 Toast for success
       showSuccess(" Property submitted successfully! It will be live soon.");
@@ -579,3 +574,4 @@ export default function Admin() {
     </div>
   );
 }
+
