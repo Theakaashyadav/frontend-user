@@ -30,6 +30,31 @@ const [selectedPackage, setSelectedPackage] = useState(null);
 
   const [paymentReference, setPaymentReference] = useState("");
 
+   /* ==============================
+     🔹 Auth Analytics Tracking
+  ============================== */
+  async function trackEvent(eventType) {
+    try {
+      const res = await fetch(`${API_BASE}/analytics/event`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ eventType }),
+      });
+  
+      if (!res.ok) {
+        const data = await res.json();
+        console.error(`Tracking ${eventType} failed`, data);
+      }
+    } catch (err) {
+      console.error(`trackEvent(${eventType}) error:`, err);
+    }
+  }
+  
+  // Convenience wrappers
+  const trackpayment = () =>trackEvent("payment");
+   const trackqr = () =>trackEvent("qr");
+  
+
 
 
   useEffect(() => {
@@ -142,6 +167,7 @@ if (hasPending) {
       if (data?.success) {
         showSuccess(`✅ Payment submitted successfully`);
         setCredits("");
+        trackpayment();
         setPaymentReference("");
         await fetchRequests(user?.userId || user?._id);
         requestsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -557,6 +583,7 @@ if (hasPending) {
         <button
          onClick={() => {
   const qrImg = getQrImage(selectedPackage);
+  trackqr();
 
   if (!qrImg) return;
 
