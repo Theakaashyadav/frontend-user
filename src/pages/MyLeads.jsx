@@ -52,19 +52,25 @@ export default function MyLeads() {
 
 
 
-  // ✅ Track analytics events
-  const trackEvent = async (eventType) => {
-    try {
-      const sessionId = localStorage.getItem("sessionId");
-      await fetch(`${API_BASE}/analytics/event`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ eventType, sessionId }), // ✅ match backend
-      });
-    } catch (err) {
-      console.error("Failed to track event:", eventType, err);
-    }
-  };
+  async function trackEvent(eventType) {
+        try {
+          const res = await fetch(`${API_BASE}/analytics/event`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ eventType }),
+          });
+      
+          if (!res.ok) {
+            const data = await res.json();
+            console.error(`Tracking ${eventType} failed`, data);
+          }
+        } catch (err) {
+          console.error(`trackEvent(${eventType}) error:`, err);
+        }
+      }
+      
+      // Convenience wrappersq
+     const tracklead = () => trackEvent("lead");
 
 
   const fetchLeads = useCallback(async () => {
@@ -205,6 +211,7 @@ export default function MyLeads() {
       if (res.ok) {
         showSuccess("Request submitted successfully!");
         setUserCredits(prev => prev - totalCost);
+        tracklead();
         fetchLeads();
         fetchRequests();
       } else {
@@ -730,3 +737,4 @@ export default function MyLeads() {
   );
 
 }
+
