@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Send, X, AlertTriangle, Mail, Phone, MessageSquare } from "lucide-react";
+import { API_BASE } from "../api";
 
 export default function SupportContactPage() {
   const [form, setForm] = useState({ name: "", email: "", issueType: "", description: "" });
@@ -15,6 +16,26 @@ export default function SupportContactPage() {
     "Feedback or suggestion",
     "Other issue",
   ];
+
+  async function trackEvent(eventType) {
+      try {
+        const res = await fetch(`${API_BASE}/analytics/event`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ eventType }),
+        });
+    
+        if (!res.ok) {
+          const data = await res.json();
+          console.error(`Tracking ${eventType} failed`, data);
+        }
+      } catch (err) {
+        console.error(`trackEvent(${eventType}) error:`, err);
+      }
+    }
+    
+    // Convenience wrappersq
+   const trackhelp = () => trackEvent("help");
 
   function validate() {
     const e = {};
@@ -38,6 +59,7 @@ export default function SupportContactPage() {
     try {
       await new Promise((r) => setTimeout(r, 1000)); // simulate API call
       setSent(true);
+      trackhelp();
       setForm({ name: "", email: "", issueType: "", description: "" });
     } finally {
       setSending(false);
