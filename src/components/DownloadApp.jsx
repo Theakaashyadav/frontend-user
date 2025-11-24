@@ -3,10 +3,31 @@ import { FaDownload, FaCheckCircle, FaStar } from "react-icons/fa";
 import Home from "../images/Home.jpg";
 import Udash from "../images/Udash.jpg";
 import Uorder from "../images/Uorder.png";
+import { API_BASE } from "../api";
 
 export default function DownloadPropertyApp({ setProfileOpen }) {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  async function trackEvent(eventType) {
+    try {
+      const res = await fetch(`${API_BASE}/analytics/event`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ eventType }),
+      });
+  
+      if (!res.ok) {
+        const data = await res.json();
+        console.error(`Tracking ${eventType} failed`, data);
+      }
+    } catch (err) {
+      console.error(`trackEvent(${eventType}) error:`, err);
+    }
+  }
+  
+  // Convenience wrappersq
+ const trackapp = () => trackEvent("app");
 
   useEffect(() => {
     const handler = (e) => {
@@ -19,6 +40,7 @@ export default function DownloadPropertyApp({ setProfileOpen }) {
 
   const handleInstallClick = () => {
     if (!deferredPrompt) {
+      trackapp();
       setLoading(true);
       const link = document.createElement("a");
       link.href =
