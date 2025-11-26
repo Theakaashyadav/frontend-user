@@ -212,31 +212,47 @@ localStorage.setItem("userPhone", phone);
   };
 
   const handleVerifyOtp = async () => {
-    if (!otp.trim()) return showError("Enter the OTP sent to WhatsApp");
-    const userId = localStorage.getItem("pendingUserId");
+  const fullOtp = pin.join(""); // OTP from 4 input boxes
 
-    try {
-      const res = await fetch(`${API_BASE}/users/verify-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, otp }),
-      });
+  if (fullOtp.length !== 4) {
+    return showError("Enter the 4-digit OTP sent to WhatsApp");
+  }
 
-      const data = await res.json();
-      if (res.ok) {
-        showSuccess("OTP verified! Activating your account...");
-        localStorage.removeItem("pendingUserId");
-        setShowOtpField(false);
-        const fullPin = pin.join("");
-        handleLoginAuto(fullPin); // retry login
-      } else {
-        showError(data.message || "Invalid OTP");
-      }
-    } catch (err) {
-      console.error("OTP verification failed:", err);
-      showError("Server error verifying OTP");
+  const userId = localStorage.getItem("pendingUserId");
+
+  if (!userId) {
+    return showError("User session expired — please login again");
+  }
+
+  try {
+    const res = await fetch(`${API_BASE}/users/verify-otp`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, otp: fullOtp }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      showSuccess("OTP verified! Activating your account...");
+
+      // remove temporary user ID
+      localStorage.removeItem("pendingUserId");
+
+      // hide OTP input UI
+      setShowOtpField(false);
+
+      // auto login using password/pin
+      handleLoginAuto(fullOtp);
+    } else {
+      showError(data.message || "Invalid OTP");
     }
-  };
+  } catch (err) {
+    console.error("OTP verification failed:", err);
+    showError("Server error verifying OTP");
+  }
+};
+
 
 
 
