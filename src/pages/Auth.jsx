@@ -212,10 +212,10 @@ localStorage.setItem("userPhone", phone);
   };
 
   const handleVerifyOtp = async () => {
-  const fullOtp = pin.join(""); // OTP from 4 input boxes
+  const fullOtp = otp.trim(); // <-- FIXED
 
-  if (fullOtp.length !== 4) {
-    return showError("Enter the 4-digit OTP sent to WhatsApp");
+  if (fullOtp.length !== 6) {
+    return showError("Enter the 6-digit OTP sent to WhatsApp");
   }
 
   const userId = localStorage.getItem("pendingUserId");
@@ -236,14 +236,16 @@ localStorage.setItem("userPhone", phone);
     if (res.ok) {
       showSuccess("OTP verified! Activating your account...");
 
-      // remove temporary user ID
       localStorage.removeItem("pendingUserId");
 
-      // hide OTP input UI
       setShowOtpField(false);
+      setShowOtpForm(false);
 
-      // auto login using password/pin
-      handleLoginAuto(fullOtp);
+      // auto login with password (PIN)
+      const fullPin = pin.join(""); 
+      if (fullPin.length === 4) {
+        handleLoginAuto(fullPin);
+      }
     } else {
       showError(data.message || "Invalid OTP");
     }
@@ -252,6 +254,7 @@ localStorage.setItem("userPhone", phone);
     showError("Server error verifying OTP");
   }
 };
+
 
 
 
