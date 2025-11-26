@@ -1,45 +1,41 @@
-let PRIMARY = "https://r55nc746-4000.inc1.devtunnels.ms/api";
-let BACKUP  = "https://akash-1-4g8j.onrender.com/api";
+const PRIMARY = "https://r55nc746-4000.inc1.devtunnels.ms/api";
+const BACKUP = "https://akash-1-4g8j.onrender.com/api";
 
-// runtime-switchable value
-let API_BASE = PRIMARY;
+let ACTIVE_API = PRIMARY;
 
-/** Always returns the current API base URL */
-export function getApiBase() {
-  return API_BASE;
+// Try calling a URL and return response or throw error
+async function tryFetch(url, options) {
+  const res = await fetch(url, options);
+  if (!res.ok) throw new Error("API error: " + res.status);
+  return res;
 }
 
-/** Switches backend if primary is down */
-export async function checkBackend() {
-  async function check(url) {
+/**
+ * Auto-failover fetch
+ * 1. Try primary API
+ * 2. If fails → automatically switch to backup
+ */
+export async function apiFetch(path, options = {}) {
+  try {
+    // Try PRIMARY server
+    return await tryFetch(ACTIVE_API + path, options);
+  } catch (e) {
+    console.warn("Primary API down → switching to BACKUP");
+
+    // Switch to backup
+    ACTIVE_API = BACKUP;
+
+    // Try BACKUP server
     try {
-      const res = await fetch(url, {
-        method: "GET",
-        cache: "no-store",
-      });
-      return res.ok;
-    } catch {
-      return false;
+      return await tryFetch(ACTIVE_API + path, options);
+    } catch (e2) {
+      console.error("Backup API also failed!", e2);
+      throw e2;
     }
   }
-
-  // Try primary /health
-  let alive = await check(PRIMARY + "/health");
-
-  // Try primary /
-  if (!alive) alive = await check(PRIMARY);
-
-  // Decide
-  if (alive) {
-    API_BASE = PRIMARY;
-    console.log("✅ Primary backend active:", API_BASE);
-  } else {
-    API_BASE = BACKUP;
-    console.warn("❌ Primary DOWN → switched to BACKUP:", API_BASE);
-  }
-
-  return API_BASE;
 }
 
-// ❌ Remove this line → DO NOT EXPORT API_BASE DIRECTLY
-// export { API_BASE };
+export function getApiBase() {
+  return ACTIVE_API;
+}
+
