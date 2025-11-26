@@ -116,9 +116,9 @@ export default function App() {
              <Route
                 path="/contact/:listingId"
                 element={
-                  
+                  <ProtectedRoute>
                     <ContactPage />
-                 
+                  </ProtectedRoute>
                 }
               />
               <Route
