@@ -212,50 +212,31 @@ localStorage.setItem("userPhone", phone);
   };
 
   const handleVerifyOtp = async () => {
-  const fullOtp = otp.trim(); // <-- FIXED
+    if (!otp.trim()) return showError("Enter the OTP sent to WhatsApp");
+    const userId = localStorage.getItem("pendingUserId");
 
-  if (fullOtp.length !== 6) {
-    return showError("Enter the 6-digit OTP sent to WhatsApp");
-  }
+    try {
+      const res = await fetch(`${API_BASE}/users/verify-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, otp }),
+      });
 
-  const userId = localStorage.getItem("pendingUserId");
-
-  if (!userId) {
-    return showError("User session expired — please login again");
-  }
-
-  try {
-    const res = await fetch(`${API_BASE}/users/verify-otp`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, otp: fullOtp }),
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      showSuccess("OTP verified! Activating your account...");
-
-      localStorage.removeItem("pendingUserId");
-
-      setShowOtpField(false);
-      setShowOtpForm(false);
-
-      // auto login with password (PIN)
-      const fullPin = pin.join(""); 
-      if (fullPin.length === 4) {
-        handleLoginAuto(fullPin);
+      const data = await res.json();
+      if (res.ok) {
+        showSuccess("OTP verified! Activating your account...");
+        localStorage.removeItem("pendingUserId");
+        setShowOtpField(false);
+        const fullPin = pin.join("");
+        handleLoginAuto(fullPin); // retry login
+      } else {
+        showError(data.message || "Invalid OTP");
       }
-    } else {
-      showError(data.message || "Invalid OTP");
+    } catch (err) {
+      console.error("OTP verification failed:", err);
+      showError("Server error verifying OTP");
     }
-  } catch (err) {
-    console.error("OTP verification failed:", err);
-    showError("Server error verifying OTP");
-  }
-};
-
-
+  };
 
 
 
