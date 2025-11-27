@@ -156,19 +156,21 @@ const trackRegister = () => trackEvent("register");
       const data = await res.json();
 
       // ✅ Handle OTP or pending cases even if response is not ok (403)
-      if (
-        data.otpRequired ||
-        data.status === "pending" ||
-        data.status === "otp_required" ||
-        data.requireOtp
-      ) {
-        showInfo("Verification required. Please check WhatsApp for OTP.");
-        setShowOtpField(true);
-        setShowOtpForm(false);
-        setOtp("");
-        localStorage.setItem("pendingUserId", data.userId || data._id);
-        return;
-      }
+     if (
+  data.otpRequired ||
+  data.status === "pending" ||
+  data.status === "otpsent" ||  
+  data.status === "otp_required" ||
+  data.requireOtp
+) {
+  showInfo("Verification required. Please check WhatsApp for OTP.");
+  setShowOtpField(true);
+  setShowOtpForm(true);
+  setOtp("");
+  localStorage.setItem("pendingUserId", data.userId || data._id);
+  return;
+}
+
 
       // ❌ If no OTP required and still not ok — show error
       if (!res.ok) {
@@ -310,6 +312,36 @@ localStorage.setItem("userPhone", phone);
     }
   };
 
+const handleResendOtp = async () => {
+  try {
+    const phone = localStorage.getItem("userPhone");
+    if (!phone) {
+      showError("Phone number missing. Please try login again.");
+      return;
+    }
+
+    
+    const res = await fetch(`${API_BASE}/users/resend-otp`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      showSuccess("OTP requested! It will arrive on WhatsApp shortly.");
+      console.log("Resend response:", data);
+    } else {
+      showError(data.message || "Failed to update status");
+    }
+  } catch (err) {
+    showError("Server error");
+    console.error(err);
+  }
+};
+
+
 
   // ✅ Forgot Password
   const handleForgotPassword = () => setShowForgot(true);
@@ -448,9 +480,13 @@ localStorage.setItem("userPhone", phone);
                     />
                   ))}
                 </div>
+                <button style={styles.resendotp} type="button" onClick={handleResendOtp}>
+                  Resend OTP
+                </button>
                 <button style={styles.button} type="button" onClick={handleVerifyOtp}>
                   Verify OTP
                 </button>
+
               </>
             )}
 
@@ -799,6 +835,16 @@ const styles = {
     borderRadius: "10px",
     border: "none",
     background: "#1B1D3A",
+    color: "#FDFCF6",
+    fontWeight: 600,
+    fontSize: "15px",
+    cursor: "pointer",
+  },
+   resendotp: {
+    padding: "12px",
+    borderRadius: "10px",
+    border: "none",
+    background: "#494a54ff",
     color: "#FDFCF6",
     fontWeight: 600,
     fontSize: "15px",
