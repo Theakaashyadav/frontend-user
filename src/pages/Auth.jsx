@@ -212,33 +212,40 @@ localStorage.setItem("userPhone", phone);
       if (shakeOnFail) shakeAllPins();
     }
   };
+const handleVerifyOtp = async () => {
+  if (!otp.trim()) return showError("Enter the OTP sent to WhatsApp");
+  const phone = localStorage.getItem("userPhone"); // use phone instead of userId
+  if (!phone) return showError("Phone number missing. Please login again.");
 
-  const handleVerifyOtp = async () => {
-    if (!otp.trim()) return showError("Enter the OTP sent to WhatsApp");
-    const userId = localStorage.getItem("pendingUserId");
+  try {
+    console.log("🔹 Sending OTP verification request for phone:", phone);
+    const res = await fetch(`${API_BASE}/users/verify-otp`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone, otp }),
+      credentials: "include", // optional if using cookies/session
+    });
 
-    try {
-      const res = await fetch(`${API_BASE}/users/verify-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, otp }),
-      });
+    const data = await res.json();
+    console.log("🔹 Response from server:", data);
 
-      const data = await res.json();
-      if (res.ok) {
-        showSuccess("OTP verified! Activating your account...");
-        localStorage.removeItem("pendingUserId");
-        setShowOtpField(false);
-        const fullPin = pin.join("");
-        handleLoginAuto(fullPin); // retry login
-      } else {
-        showError(data.message || "Invalid OTP");
-      }
-    } catch (err) {
-      console.error("OTP verification failed:", err);
-      showError("Server error verifying OTP");
+    if (res.ok) {
+      showSuccess("OTP verified! Account activated.");
+      setShowOtpField(false);
+      setShowOtpForm(false);
+
+      // Retry login automatically after activation
+      const fullPin = pin.join("");
+      handleLoginAuto(fullPin);
+    } else {
+      showError(data.message || "Invalid or expired OTP");
     }
-  };
+  } catch (err) {
+    console.error("❌ OTP verification failed:", err);
+    showError("Server error verifying OTP");
+  }
+};
+
 
 
 
