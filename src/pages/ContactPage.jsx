@@ -141,11 +141,7 @@ export default function ContactPage() {
   const [addedToCart, setAddedToCart] = useState(false);
   const cartRef = useRef(null);
 
-  useEffect(() => {
-    if (!authLoading && !user) {
-      navigate("/auth", { state: { redirectTo: location.pathname } });
-    }
-  }, [authLoading, user, navigate, location.pathname]);
+
 
   useEffect(() => setShowPage(true), []);
 
@@ -205,6 +201,11 @@ const handleAddToCartClick = async (e) => {
 
   try {
     const storedUser = JSON.parse(localStorage.getItem("authUser"));
+      // 🔍 CHECK LOGIN
+  if (!storedUser?.userId) {
+    navigate("/auth", { state: { redirectTo: location.pathname } });
+    return;
+  }
     let fetchedName = storedUser?.name || "";
     let fetchedPhone = storedUser?.phone || "";
 
@@ -356,10 +357,16 @@ const handleAddToCartClick = async (e) => {
         border: "none",
         marginBottom: "30px",
       }}
-      onClick={(e) => {
-      e.stopPropagation();
-      handleAddToCartClick(e);
-    }}
+     onClick={(e) => {
+  e.stopPropagation();
+
+  if (!user) {
+    navigate("/auth", { state: { redirectTo: location.pathname } });
+    return;
+  }
+
+  handleAddToCartClick(e);
+}}
   >
       Add to Cart
     </button>
