@@ -1,4 +1,4 @@
-let PRIMARY = "https://r55nc746-4000.inc1.devtunnels.ms/api";
+let PRIMARY = "https://akash-1-4g8j.onrender.com/api";
 let BACKUP  = "https://akash-1-4g8j.onrender.com/api";
 
 let API_BASE = PRIMARY; // default
