@@ -1,28 +1,16 @@
-let PRIMARY = "https://akash-1-4g8j.onrender.com/api";
-let BACKUP  = "https://akash-1-4g8j.onrender.com/api";
+// src/api.js
 
-let API_BASE = PRIMARY; // default
+let API_BASE = "";
 
-/**
- * Checks if backend is alive.
- * Returns: true = alive, false = dead.
- */
-export async function checkBackend() {
-  try {
-    const res = await fetch(PRIMARY + "/health", { method: "GET" });
-
-    if (res.ok) {
-      API_BASE = PRIMARY;
-      console.log("✅ Primary backend active");
-      return PRIMARY;
-    } else {
-      throw new Error("Primary unhealthy");
-    }
-  } catch (e) {
-    console.warn("❌ Primary backend down. Switching to BACKUP...");
-    API_BASE = BACKUP;
-    return BACKUP;
-  }
+if (window.location.hostname.includes("devtunnels.ms")) {
+  API_BASE = "https://akash-1-4g8j.onrender.com/api";
+} else if (window.location.hostname.includes("localhost")) {
+  API_BASE = "https://akash-1-4g8j.onrender.com/api";
+} else {
+  // Production backend on Render
+  API_BASE = "https://akash-1-4g8j.onrender.com/api";
 }
 
 export { API_BASE };
+
+
