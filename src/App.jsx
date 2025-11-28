@@ -21,7 +21,7 @@ import BottomNav from "./components/BottomNav";
 import SupportContactPage from "./pages/ContactUs";
 import DownloadAppButton from "./components/DownloadApp";
 import TermsAndConditions from "./components/terms";
-import { checkBackend } from "./api";
+
 
 export default function App() {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -37,9 +37,6 @@ export default function App() {
     return "home";
   };
 
-useEffect(() => {
-  checkBackend();
-}, []);
   // ✅ Detect mobile or tablet screens
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 1024);
